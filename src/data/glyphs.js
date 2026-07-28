@@ -34,7 +34,7 @@ export function buildGlyphs({ w, d, a }, animate = false) {
       <circle cx="76" cy="22" r="2.2" fill="${d}" data-twinkle="" style="--i:1"/>
       <circle cx="78" cy="74" r="1.6" fill="${d}" data-twinkle="" style="--i:2"/>`,
 
-    'steering-wheel': `
+    helm: `
       <g data-wheel="">
         <circle cx="48" cy="48" r="19" stroke="${w}" stroke-width="3" fill="none" stroke-linecap="round"/>
         <circle cx="48" cy="48" r="4.5" fill="${w}"/>

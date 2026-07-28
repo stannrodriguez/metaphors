@@ -19,11 +19,11 @@ export const metaphors = [
       'Polaris holds its place while the whole sky wheels around it. A navigator reads the angle, corrects the heading, and sails on. The star never closes the distance for any of that effort, and it holds the course anyway.',
     breaking:
       'No ship arrives at a star. A goal that nothing can reach also rules nothing out and settles no argument between two headings. Ships sink while their bearing stays true.',
-    related: ['steering-wheel', 'map'],
+    related: ['helm', 'map'],
   },
   {
-    slug: 'steering-wheel',
-    name: 'Steering wheel',
+    slug: 'helm',
+    name: 'Helm',
     oneLiner: 'Hold the wheel, not the road.',
     family: 'direction-and-time',
     draft: true,
@@ -174,7 +174,7 @@ export const metaphors = [
       'Iron filings scatter at random until a magnet slides under the paper, and the pattern that springs up belongs to the field. Both poles carry information, so who arrives and who leaves describe one force. Iron parked near a strong magnet turns magnetic, and the pull propagates by proximity.',
     breaking:
       'Filings get no say and people do. Field strength measures no worth, since a strong pull takes scrap as readily as anything else. Fields also end, and walking far enough releases the force, which leaves gravity as the limiting case, the one field with no exit.',
-    related: ['steering-wheel', 'the-game'],
+    related: ['helm', 'the-game'],
   },
   {
     slug: 'the-game',

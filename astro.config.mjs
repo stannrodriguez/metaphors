@@ -15,6 +15,14 @@ export default defineConfig({
   site: SITE,
   base: BASE,
   trailingSlash: 'always',
+  // This card shipped briefly as "Steering wheel". Static hosts cannot issue a
+  // real redirect, so Astro emits a meta-refresh page at the old address.
+  //
+  // The route key is resolved against the base, but the destination is written
+  // out verbatim, so that one has to carry the base itself.
+  redirects: {
+    '/steering-wheel/': `${BASE.replace(/\/+$/, '')}/helm/`,
+  },
   build: {
     inlineStylesheets: 'always',
   },
