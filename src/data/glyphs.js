@@ -28,11 +28,12 @@ export function buildGlyphs({ w, d, a }, animate = false) {
 
   return {
     'north-star': `
-      <path d="M48 16 L54 42 L80 48 L54 54 L48 80 L42 54 L16 48 L42 42 Z" stroke="${w}" stroke-width="3" fill="none" stroke-linejoin="round"/>
+      <g data-star=""><path d="M48 16 L54 42 L80 48 L54 54 L48 80 L42 54 L16 48 L42 42 Z" stroke="${w}" stroke-width="3" fill="none" stroke-linejoin="round"/></g>
+      <path d="M48 33 L48 63 M33 48 L63 48" stroke="${a}" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0" data-glint=""/>
       <circle cx="48" cy="48" r="3" fill="${a}" data-core=""/>
-      <circle cx="24" cy="24" r="1.8" fill="${d}" data-twinkle="" style="--i:0"/>
-      <circle cx="76" cy="22" r="2.2" fill="${d}" data-twinkle="" style="--i:1"/>
-      <circle cx="78" cy="74" r="1.6" fill="${d}" data-twinkle="" style="--i:2"/>`,
+      <circle cx="24" cy="24" r="1.8" fill="${d}" data-twinkle="" style="--ox:24px;--oy:24px;--i:0"/>
+      <circle cx="76" cy="22" r="2.2" fill="${d}" data-twinkle="" style="--ox:76px;--oy:22px;--i:1"/>
+      <circle cx="78" cy="74" r="1.6" fill="${d}" data-twinkle="" style="--ox:78px;--oy:74px;--i:2"/>`,
 
     helm: `
       <g data-wheel="">
@@ -79,7 +80,8 @@ export function buildGlyphs({ w, d, a }, animate = false) {
         <line x1="30" y1="52" x2="68" y2="34" stroke="${w}" stroke-width="3.5" stroke-linecap="round"/>
         <line x1="33" y1="57" x2="66" y2="41" stroke="${d}" stroke-width="1.5" stroke-linecap="round"/>
       </g>
-      <path d="M70 30 L76 24 M74 34 L81 31" stroke="${a}" stroke-width="2.2" fill="none" stroke-linecap="round" data-sparks=""/>`,
+      <path d="M70 30 L76 24 M74 34 L81 31" stroke="${a}" stroke-width="2.2" fill="none" stroke-linecap="round" data-sparks=""/>
+      <path d="M26 50 L20 44 M22 54 L15 51" stroke="${a}" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0" data-sparks-back=""/>`,
 
     ratchet: `
       <g data-teeth="">
@@ -93,8 +95,11 @@ export function buildGlyphs({ w, d, a }, animate = false) {
       <path d="M34 26 L34 74 M48 26 L48 74 M62 26 L62 74 M26 40 L70 40 M26 58 L70 58" stroke="${d}" stroke-width="2" fill="none" stroke-linecap="round"/>
       <g data-vine="">
         <path d="M34 76 Q40 60 48 56 Q60 50 58 34" stroke="${a}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <circle cx="44" cy="58" r="2.6" fill="${a}" data-bud="" style="--ox:44px;--oy:58px;--i:0"/>
-        <circle cx="56" cy="40" r="2.6" fill="${a}" data-bud="" style="--ox:56px;--oy:40px;--i:1"/>
+        <path d="M34 76 Q40 60 48 56 Q60 50 58 34" stroke="${w}" stroke-width="6" fill="none" stroke-linecap="round" pathLength="100" stroke-dasharray="32 68" opacity="0" data-growth=""/>
+        <circle cx="37" cy="68" r="2.2" fill="${a}" data-bud="" style="--ox:37px;--oy:68px;--i:0"/>
+        <circle cx="44" cy="58" r="2.6" fill="${a}" data-bud="" style="--ox:44px;--oy:58px;--i:1"/>
+        <circle cx="52" cy="53" r="2.2" fill="${a}" data-bud="" style="--ox:52px;--oy:53px;--i:2"/>
+        <circle cx="56" cy="40" r="2.6" fill="${a}" data-bud="" style="--ox:56px;--oy:40px;--i:3"/>
       </g>`,
 
     chrysalis: animate
@@ -121,9 +126,10 @@ export function buildGlyphs({ w, d, a }, animate = false) {
       <circle cx="27" cy="46" r="1.4" fill="${d}"/>`,
 
     candle: `
+      <circle cx="48" cy="33" r="16" fill="${a}" opacity="0" data-shine=""/>
       <rect x="40" y="46" width="16" height="26" rx="2" stroke="${w}" stroke-width="3" fill="none" stroke-linecap="round"/>
       <line x1="48" y1="40" x2="48" y2="46" stroke="${w}" stroke-width="2"/>
-      <g data-flame=""><path d="M48 26 Q54 34 48 40 Q42 34 48 26 Z" fill="${a}"/></g>
+      <g data-flame=""><path d="M48 22 Q56 33 48 41 Q40 33 48 22 Z" fill="${a}"/></g>
       <circle cx="48" cy="33" r="13" stroke="${d}" stroke-width="1.5" stroke-dasharray="3 5" fill="none" stroke-linecap="round" data-halo=""/>
       <path d="M40 52 Q38 56 40 60" stroke="${d}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
 
@@ -133,9 +139,16 @@ export function buildGlyphs({ w, d, a }, animate = false) {
       <rect x="55" y="20" width="10" height="9" fill="${a}"/>
       <path d="M26 34 Q14 48 26 62" stroke="${d}" stroke-width="1.6" stroke-dasharray="3 4" fill="none" stroke-linecap="round" data-field=""/>
       <path d="M70 34 Q82 48 70 62" stroke="${d}" stroke-width="1.6" stroke-dasharray="3 4" fill="none" stroke-linecap="round" data-field=""/>
-      <circle cx="22" cy="72" r="1.8" fill="${d}" data-filing="" style="--dx:1.1px;--dy:-3.8px;--i:0"/>
-      <circle cx="30" cy="76" r="1.5" fill="${d}" data-filing="" style="--dx:0.5px;--dy:-3.9px;--i:1"/>
-      <circle cx="70" cy="74" r="1.7" fill="${d}" data-filing="" style="--dx:-0.8px;--dy:-3.9px;--i:2"/>`,
+      <path d="M26 34 Q14 48 26 62" stroke="${a}" stroke-width="1.8" stroke-dasharray="3 4" fill="none" stroke-linecap="round" opacity="0" data-field-echo="" style="--i:0"/>
+      <path d="M70 34 Q82 48 70 62" stroke="${a}" stroke-width="1.8" stroke-dasharray="3 4" fill="none" stroke-linecap="round" opacity="0" data-field-echo="" style="--i:0"/>
+      <path d="M26 34 Q14 48 26 62" stroke="${a}" stroke-width="1.8" stroke-dasharray="3 4" fill="none" stroke-linecap="round" opacity="0" data-field-echo="" style="--i:1"/>
+      <path d="M70 34 Q82 48 70 62" stroke="${a}" stroke-width="1.8" stroke-dasharray="3 4" fill="none" stroke-linecap="round" opacity="0" data-field-echo="" style="--i:1"/>
+      <circle cx="18" cy="70" r="1.8" fill="${d}" data-filing="" style="--ox:18px;--oy:70px;--dx:18px;--dy:-41px;--i:0"/>
+      <circle cx="26" cy="78" r="1.5" fill="${d}" data-filing="" style="--ox:26px;--oy:78px;--dx:10px;--dy:-49px;--i:1"/>
+      <circle cx="36" cy="74" r="1.7" fill="${d}" data-filing="" style="--ox:36px;--oy:74px;--dx:0px;--dy:-45px;--i:2"/>
+      <circle cx="60" cy="76" r="1.6" fill="${d}" data-filing="" style="--ox:60px;--oy:76px;--dx:0px;--dy:-47px;--i:3"/>
+      <circle cx="70" cy="72" r="1.8" fill="${d}" data-filing="" style="--ox:70px;--oy:72px;--dx:-10px;--dy:-43px;--i:4"/>
+      <circle cx="78" cy="66" r="1.5" fill="${d}" data-filing="" style="--ox:78px;--oy:66px;--dx:-18px;--dy:-37px;--i:5"/>`,
 
     'the-game': `
       <rect x="22" y="42" width="36" height="36" stroke="${w}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
@@ -188,9 +201,9 @@ export function buildGlyphs({ w, d, a }, animate = false) {
         <path d="M28 22 L58 74 L18 74 Z" fill="${d}" opacity="0.45"/>
         <circle cx="38" cy="66" r="4" fill="${a}"/>
       </g>
-      <circle cx="70" cy="36" r="1.8" fill="${d}" data-twinkle="" style="--i:0"/>
-      <circle cx="78" cy="56" r="1.6" fill="${d}" data-twinkle="" style="--i:1"/>
-      <circle cx="64" cy="22" r="1.5" fill="${d}" data-twinkle="" style="--i:2"/>`,
+      <circle cx="70" cy="36" r="1.8" fill="${d}" data-twinkle="" style="--ox:70px;--oy:36px;--i:0"/>
+      <circle cx="78" cy="56" r="1.6" fill="${d}" data-twinkle="" style="--ox:78px;--oy:56px;--i:1"/>
+      <circle cx="64" cy="22" r="1.5" fill="${d}" data-twinkle="" style="--ox:64px;--oy:22px;--i:2"/>`,
 
     mask: `
       <g data-mask="">
