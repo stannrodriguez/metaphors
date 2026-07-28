@@ -15,9 +15,6 @@ const m = bySlug[slug]
 const family = families[m.family]
 const { prev, next } = neighbors(m.slug)
 
-// The chrysalis opens and the candle flickers. Nothing else moves.
-const animates = m.slug === 'chrysalis' || m.slug === 'candle'
-
 const allSlugs = metaphors.map((x) => x.slug).join(',')
 const related = m.related.map((r) => bySlug[r])
 ---
@@ -48,7 +45,7 @@ const related = m.related.map((r) => bySlug[r])
 
       <main class="entry" id="main">
         <div class="entry__illo">
-          <span class="entry__illo-in"><Glyph slug={m.slug} animate={animates} /></span>
+          <span class="entry__illo-in"><Glyph slug={m.slug} animate /></span>
         </div>
 
         <div class="entry__body">

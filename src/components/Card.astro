@@ -15,7 +15,7 @@ const { metaphor } = Astro.props
 <a class="card" href={entry(metaphor.slug)}>
   <span class="card__face">
     <span class="card__glyph">
-      <span class="card__glyph-in"><Glyph slug={metaphor.slug} /></span>
+      <span class="card__glyph-in"><Glyph slug={metaphor.slug} animate /></span>
     </span>
     <span class="card__name">{metaphor.name}</span>
     <span class="card__line">{metaphor.oneLiner}</span>

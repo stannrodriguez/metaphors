@@ -160,20 +160,7 @@ a:hover {
   min-height: 16cqw;
 }
 
-/* Spin on hover, exactly as the design does it. */
-[data-wheel] {
-  transform-origin: 48px 48px;
-}
-.card:hover [data-wheel],
-.card:focus-visible [data-wheel] {
-  animation: spin 5s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* The glyphs' own motion lives at the foot of this file. */
 
 @keyframes glowpulse {
   from {
@@ -524,8 +511,8 @@ a:hover {
 /* The design auto-animates the glyphs where there is no hover to spend them on.
    Held to the simple grid, so the ring keeps its stillness until then. */
 @media (max-width: 859px) {
-  .card [data-wheel] {
-    animation: spin 7s linear infinite;
+  .card [data-motion-glyph] {
+    --play: running;
   }
   .card__glyph-in {
     animation: glowpulse 2.8s ease-in-out infinite alternate;
@@ -572,7 +559,177 @@ a:hover {
   }
 }
 
-/* ── The two entries that move ─────────────────────────────────────────── */
+/* ── The glyphs in motion ──────────────────────────────────────────────── */
+
+/* Each glyph keeps one motion of its own, and `--play` says whether it runs.
+   A card moves while it is hovered or focused; an entry's illustration always
+   moves; the simple grid, which has no hover to spend, runs the lot. Every
+   rule below ends its `animation` shorthand with var(--play), which is the
+   play-state slot — so a glyph with no --play (the social images, which carry
+   no data-motion-glyph) drops the declaration and stays perfectly still.
+
+   Each motion's 0% is the design's resting pose, so a paused card looks
+   exactly as it was drawn. */
+[data-motion-glyph] {
+  --play: paused;
+}
+.card:hover [data-motion-glyph],
+.card:focus-visible [data-motion-glyph],
+.entry__illo [data-motion-glyph] {
+  --play: running;
+}
+
+/* Shared motions. */
+[data-wheel] {
+  transform-origin: 48px 48px;
+  animation: spin 5s linear infinite var(--play);
+}
+[data-twinkle] {
+  animation: twinkle 4.4s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 1.1s);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  55% { opacity: 0.45; }
+}
+/* For the dashed accents: 14 is two whole 3-4 dashes, so it loops seamlessly. */
+@keyframes march {
+  to { stroke-dashoffset: -14; }
+}
+
+/* North star: the core breathes, the far dust twinkles out of step. */
+[data-motion-glyph='north-star'] [data-core] {
+  transform-origin: 48px 48px;
+  animation: breathe 5.5s ease-in-out infinite var(--play);
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.72; }
+}
+
+/* Map: the dashes walk the route and the X marks time. */
+[data-motion-glyph='map'] [data-route] {
+  animation: march 2.6s linear infinite var(--play);
+}
+[data-motion-glyph='map'] [data-mark] {
+  transform-origin: 68px 42px;
+  animation: breathe 2.6s ease-in-out infinite var(--play);
+}
+
+/* River: the three currents swell out of phase and the gold is carried down
+   them, off the left edge and back in from the right. */
+[data-motion-glyph='river'] [data-current] {
+  animation: swell 5.2s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 0.7s);
+}
+[data-motion-glyph='river'] [data-carried] {
+  animation: carried 9s linear infinite var(--play);
+}
+@keyframes swell {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes carried {
+  0%, 6% { transform: translateX(0); opacity: 1; }
+  46% { transform: translateX(-36px); opacity: 1; }
+  53% { transform: translateX(-44px); opacity: 0; }
+  57% { transform: translateX(40px); opacity: 0; }
+  64% { transform: translateX(34px); opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* Flywheel: the wheel turns, the stored energy circles back the other way. */
+[data-motion-glyph='flywheel'] [data-arcs] {
+  transform-origin: 48px 48px;
+  animation: spin-back 11s linear infinite var(--play);
+}
+@keyframes spin-back {
+  to { transform: rotate(-360deg); }
+}
+
+/* Battery: the empty cell fills from the bottom, holds, and drains. */
+[data-motion-glyph='battery'] [data-charge] {
+  transform-origin: 51px 55px;
+  animation: charge 6s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='battery'] [data-terminal] {
+  transform-origin: 71.5px 49px;
+  animation: terminal 6s ease-in-out infinite var(--play);
+}
+@keyframes charge {
+  0%, 10% { opacity: 1; transform: scaleY(0); }
+  46%, 78% { opacity: 1; transform: scaleY(1); }
+  90%, 100% { opacity: 1; transform: scaleY(0); }
+}
+@keyframes terminal {
+  0%, 30% { transform: scale(1); }
+  56%, 74% { transform: scale(1.18); }
+  88%, 100% { transform: scale(1); }
+}
+
+/* Whetstone: the blade is drawn along the stone and throws a spark at the
+   top of each pass. */
+[data-motion-glyph='whetstone'] [data-blade] {
+  animation: hone 3.4s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='whetstone'] [data-sparks] {
+  animation: spark 3.4s ease-in-out infinite var(--play);
+}
+@keyframes hone {
+  0%, 100% { transform: translate(0, 0); }
+  28% { transform: translate(-4px, 1.9px); }
+  72% { transform: translate(4px, -1.9px); }
+}
+@keyframes spark {
+  0%, 55% { opacity: 0.3; }
+  74% { opacity: 1; }
+  90%, 100% { opacity: 0.3; }
+}
+
+/* Ratchet: the teeth go round in clicks, never smoothly, and the pawl drops
+   into each one. Twelve steps to the turn, so the pawl's half-second tick
+   lands on every click. */
+[data-motion-glyph='ratchet'] [data-teeth] {
+  transform-origin: 48px 48px;
+  animation: click 6s steps(12) infinite var(--play);
+}
+[data-motion-glyph='ratchet'] [data-pawl] {
+  animation: tick 0.5s ease-out infinite var(--play);
+}
+@keyframes click {
+  to { transform: rotate(360deg); }
+}
+@keyframes tick {
+  0%, 55% { transform: translate(0, 0); }
+  72% { transform: translate(-1.8px, 1.4px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Trellis: the vine sways on its frame and the buds open. */
+[data-motion-glyph='trellis'] [data-vine] {
+  transform-origin: 34px 76px;
+  animation: sway 7.5s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='trellis'] [data-bud] {
+  transform-origin: var(--ox) var(--oy);
+  animation: bloom 7.5s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 1.2s);
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(0deg); }
+  32% { transform: rotate(-2.4deg); }
+  68% { transform: rotate(2.4deg); }
+}
+@keyframes bloom {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.45); }
+}
 
 /* Chrysalis: the shell opens, a butterfly climbs out, the shell closes.
    One slow, quiet cycle. */
@@ -581,46 +738,49 @@ a:hover {
   transform-origin: 48px 26px;
 }
 [data-motion-glyph='chrysalis'] [data-shell-l] {
-  animation: shell-l 16s ease-in-out infinite;
+  animation: shell-l 16s ease-in-out infinite var(--play);
 }
 [data-motion-glyph='chrysalis'] [data-shell-r] {
-  animation: shell-r 16s ease-in-out infinite;
+  animation: shell-r 16s ease-in-out infinite var(--play);
 }
 [data-motion-glyph='chrysalis'] [data-seam] {
-  animation: seam 16s ease-in-out infinite;
+  animation: seam 16s ease-in-out infinite var(--play);
 }
 [data-motion-glyph='chrysalis'] [data-butterfly] {
   opacity: 0;
-  animation: emerge 16s ease-in-out infinite;
+  animation: emerge 16s ease-in-out infinite var(--play);
 }
 [data-motion-glyph='chrysalis'] [data-wing-l],
 [data-motion-glyph='chrysalis'] [data-wing-r] {
   transform-origin: 48px 48px;
-  animation: flap 3.2s ease-in-out infinite;
+  animation: flap 3.2s ease-in-out infinite var(--play);
 }
 
 /* Positive rotation swings the hanging end left, so the left half takes the
    positive angle and the right half the negative one. */
+/* The shell starts opening a second in, not four. The cycle is as long and as
+   slow as it was; it just doesn't spend its opening seconds holding still,
+   which on a card reads as nothing happening. */
 @keyframes shell-l {
-  0%, 28% { transform: rotate(0deg); }
-  44%, 84% { transform: rotate(17deg); }
+  0%, 6% { transform: rotate(0deg); }
+  26%, 84% { transform: rotate(17deg); }
   96%, 100% { transform: rotate(0deg); }
 }
 @keyframes shell-r {
-  0%, 28% { transform: rotate(0deg); }
-  44%, 84% { transform: rotate(-17deg); }
+  0%, 6% { transform: rotate(0deg); }
+  26%, 84% { transform: rotate(-17deg); }
   96%, 100% { transform: rotate(0deg); }
 }
 @keyframes seam {
-  0%, 28% { opacity: 1; }
-  42%, 86% { opacity: 0; }
+  0%, 6% { opacity: 1; }
+  24%, 86% { opacity: 0; }
   96%, 100% { opacity: 1; }
 }
 @keyframes emerge {
-  0%, 36% { opacity: 0; transform: translateY(6px) scale(0.7); }
-  54% { opacity: 1; transform: translateY(-4px) scale(1); }
-  78% { opacity: 1; transform: translateY(-13px) scale(1); }
-  90%, 100% { opacity: 0; transform: translateY(-22px) scale(1); }
+  0%, 18% { opacity: 0; transform: translateY(6px) scale(0.7); }
+  36% { opacity: 1; transform: translateY(-4px) scale(1); }
+  70% { opacity: 1; transform: translateY(-13px) scale(1); }
+  88%, 100% { opacity: 0; transform: translateY(-22px) scale(1); }
 }
 @keyframes flap {
   0%, 100% { transform: scaleX(1); }
@@ -630,10 +790,10 @@ a:hover {
 /* Candle: the flame leans and breathes. */
 [data-motion-glyph='candle'] [data-flame] {
   transform-origin: 48px 40px;
-  animation: flicker 3.6s ease-in-out infinite;
+  animation: flicker 3.6s ease-in-out infinite var(--play);
 }
 [data-motion-glyph='candle'] [data-halo] {
-  animation: halo 3.6s ease-in-out infinite;
+  animation: halo 3.6s ease-in-out infinite var(--play);
 }
 
 @keyframes flicker {
@@ -650,6 +810,142 @@ a:hover {
 }
 [data-motion-glyph='candle'] [data-halo] {
   transform-origin: 48px 33px;
+}
+
+/* Magnet: the field pulses and the filings creep toward the poles, each on
+   its own heading. */
+[data-motion-glyph='magnet'] [data-field] {
+  transform-origin: 48px 48px;
+  animation: field 4.4s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='magnet'] [data-filing] {
+  animation: attract 4.4s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 0.5s);
+}
+@keyframes field {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.07); }
+}
+@keyframes attract {
+  0%, 100% { transform: translate(0, 0); }
+  55% { transform: translate(var(--dx), var(--dy)); }
+}
+
+/* The game: the piece hops three squares up the board, then goes back to
+   where it started while nobody is looking. */
+[data-motion-glyph='the-game'] [data-piece] {
+  animation: hop 7s ease-in-out infinite var(--play);
+}
+/* Three squares up the diagonal: a column is 12 wide, a row 12 deep, and the
+   piece starts one column clear of the board's right edge. */
+@keyframes hop {
+  0%, 8% { transform: translate(0, 0); opacity: 1; }
+  16% { transform: translate(-9px, -7px); opacity: 1; }
+  24%, 32% { transform: translate(-18px, 0); opacity: 1; }
+  40% { transform: translate(-24px, -10px); opacity: 1; }
+  48%, 56% { transform: translate(-30px, -12px); opacity: 1; }
+  64% { transform: translate(-36px, -22px); opacity: 1; }
+  72%, 82% { transform: translate(-42px, -24px); opacity: 1; }
+  88% { transform: translate(-42px, -24px); opacity: 0; }
+  92% { transform: translate(0, 0); opacity: 0; }
+  100% { transform: translate(0, 0); opacity: 1; }
+}
+
+/* Portal: the far side comes and goes, and its edge keeps travelling. */
+[data-motion-glyph='portal'] [data-threshold] {
+  animation:
+    march 3.4s linear infinite var(--play),
+    open 5.6s ease-in-out infinite var(--play);
+}
+@keyframes open {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* Deck: the stack riffles, each card a beat behind the one above it. */
+[data-motion-glyph='deck'] [data-leaf] {
+  animation: riffle 4.8s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 0.16s);
+}
+@keyframes riffle {
+  0%, 60%, 100% { transform: translate(0, 0); }
+  22% { transform: translate(2.5px, -3px); }
+  40% { transform: translate(-1px, -1px); }
+}
+
+/* Door: it swings open on its hinge and falls to. */
+[data-motion-glyph='door'] [data-door] {
+  transform-origin: 34px 48px;
+  animation: swing 7s ease-in-out infinite var(--play);
+}
+@keyframes swing {
+  0%, 14% { transform: scaleX(1); }
+  46%, 68% { transform: scaleX(0.28); }
+  92%, 100% { transform: scaleX(1); }
+}
+
+/* Vortex: the spiral turns (shared [data-wheel]) and the one speck that got
+   out keeps flaring on its way. */
+[data-motion-glyph='vortex'] [data-speck] {
+  transform-origin: 70px 28px;
+  animation: breathe 3.2s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='vortex'] [data-escape] {
+  animation: escape 1.6s linear infinite var(--play);
+}
+@keyframes escape {
+  to { stroke-dashoffset: -12; }
+}
+
+/* Abyss: something is dropped in, the ripples close over it, and nothing
+   comes back. */
+[data-motion-glyph='abyss'] [data-probe] {
+  animation: sink 7s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='abyss'] [data-ripple] {
+  animation: ripple 3.4s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 0.45s);
+}
+@keyframes sink {
+  0%, 8% { transform: translateY(0); opacity: 1; }
+  40% { transform: translateY(18px); opacity: 0.35; }
+  52% { transform: translateY(26px); opacity: 0; }
+  92% { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes ripple {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.28; }
+}
+
+/* Spotlight: the beam sweeps, and what it isn't on stays dim. */
+[data-motion-glyph='spotlight'] [data-beam] {
+  transform-origin: 28px 22px;
+  animation: sweep 9s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='spotlight'] [data-lamp] {
+  transform-origin: 28px 22px;
+  animation: breathe 4.5s ease-in-out infinite var(--play);
+}
+@keyframes sweep {
+  0%, 100% { transform: rotate(0deg); }
+  34% { transform: rotate(6deg); }
+  70% { transform: rotate(-5deg); }
+}
+
+/* Mask: it turns a little to keep facing you, and blinks once a cycle. */
+[data-motion-glyph='mask'] [data-mask] {
+  transform-origin: 48px 74px;
+  animation: sway 8s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='mask'] [data-eye] {
+  transform-origin: var(--ox) var(--oy);
+  animation: blink 8s ease-in-out infinite var(--play);
+}
+@keyframes blink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  92% { transform: scaleY(0.1); }
+  96% { transform: scaleY(1); }
 }
 
 /* ── Motion ────────────────────────────────────────────────────────────── */
