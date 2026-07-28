@@ -585,8 +585,9 @@ a:hover {
   animation: spin 5s linear infinite var(--play);
 }
 [data-twinkle] {
-  animation: twinkle 4.4s ease-in-out infinite var(--play);
-  animation-delay: calc(var(--i) * 1.1s);
+  transform-origin: var(--ox, 48px) var(--oy, 48px);
+  animation: twinkle 3.2s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 0.8s);
 }
 
 @keyframes spin {
@@ -595,18 +596,40 @@ a:hover {
   }
 }
 @keyframes twinkle {
-  0%, 100% { opacity: 1; }
-  55% { opacity: 0.45; }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  55% { opacity: 0.1; transform: scale(0.4); }
 }
 /* For the dashed accents: 14 is two whole 3-4 dashes, so it loops seamlessly. */
 @keyframes march {
   to { stroke-dashoffset: -14; }
 }
 
-/* North star: the core breathes, the far dust twinkles out of step. */
+/* North star: the whole star swells and takes light, a glint turns across it,
+   and the far dust twinkles out of step. */
+[data-motion-glyph='north-star'] [data-star] {
+  transform-origin: 48px 48px;
+  animation: shine 4.2s ease-in-out infinite var(--play);
+}
 [data-motion-glyph='north-star'] [data-core] {
   transform-origin: 48px 48px;
-  animation: breathe 5.5s ease-in-out infinite var(--play);
+  animation: pulse 4.2s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='north-star'] [data-glint] {
+  transform-origin: 48px 48px;
+  animation: glint 4.2s ease-in-out infinite var(--play);
+}
+@keyframes shine {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  46% { transform: scale(1.1); filter: brightness(1.5); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  46% { transform: scale(2); }
+}
+@keyframes glint {
+  0%, 20% { opacity: 0; transform: rotate(45deg) scale(0.3); }
+  46% { opacity: 0.95; transform: rotate(90deg) scale(1); }
+  72%, 100% { opacity: 0; transform: rotate(135deg) scale(0.3); }
 }
 @keyframes breathe {
   0%, 100% { transform: scale(1); opacity: 1; }
@@ -673,23 +696,39 @@ a:hover {
   88%, 100% { transform: scale(1); }
 }
 
-/* Whetstone: the blade is drawn along the stone and throws a spark at the
-   top of each pass. */
+/* Whetstone: the blade is worked up and down the stone, throwing a spark off
+   whichever end it reaches. A full stroke each way, so there is something to
+   see from any moment you look. */
 [data-motion-glyph='whetstone'] [data-blade] {
-  animation: hone 3.4s ease-in-out infinite var(--play);
+  transform-origin: 49px 43px;
+  animation: hone 2.2s ease-in-out infinite var(--play);
 }
 [data-motion-glyph='whetstone'] [data-sparks] {
-  animation: spark 3.4s ease-in-out infinite var(--play);
+  transform-origin: 75px 29px;
+  animation: spark 2.2s ease-out infinite var(--play);
 }
+[data-motion-glyph='whetstone'] [data-sparks-back] {
+  transform-origin: 21px 49px;
+  animation: spark-back 2.2s ease-out infinite var(--play);
+}
+/* Along the blade's own axis, and rolled a little into the stone on the way
+   down — a stroke, not a nudge. */
 @keyframes hone {
-  0%, 100% { transform: translate(0, 0); }
-  28% { transform: translate(-4px, 1.9px); }
-  72% { transform: translate(4px, -1.9px); }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  30% { transform: translate(-10px, 4.8px) rotate(4deg); }
+  75% { transform: translate(10px, -4.8px) rotate(-4deg); }
 }
+/* Drawn at rest as the design has it, dim through the down-stroke, and flaring
+   as the blade reaches the top. */
 @keyframes spark {
-  0%, 55% { opacity: 0.3; }
-  74% { opacity: 1; }
-  90%, 100% { opacity: 0.3; }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  30%, 58% { opacity: 0.25; transform: scale(0.7); }
+  78% { opacity: 1; transform: scale(1.35); }
+}
+@keyframes spark-back {
+  0%, 16% { opacity: 0; transform: scale(0.7); }
+  32% { opacity: 1; transform: scale(1.35); }
+  48%, 100% { opacity: 0; transform: scale(0.7); }
 }
 
 /* Ratchet: the teeth go round in clicks, never smoothly, and the pawl drops
@@ -711,24 +750,36 @@ a:hover {
   100% { transform: translate(0, 0); }
 }
 
-/* Trellis: the vine sways on its frame and the buds open. */
+/* Trellis: growth runs up the vine as a bright pulse, opening each bud as it
+   passes, and the whole vine sways on its frame. The pulse is a second copy of
+   the vine's path, dashed to a single 16-unit segment and walked from the base
+   to the tip — the vine itself stays drawn, so the card at rest is unchanged. */
 [data-motion-glyph='trellis'] [data-vine] {
   transform-origin: 34px 76px;
-  animation: sway 7.5s ease-in-out infinite var(--play);
+  animation: sway 6s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='trellis'] [data-growth] {
+  animation: growth 4.5s linear infinite var(--play);
 }
 [data-motion-glyph='trellis'] [data-bud] {
   transform-origin: var(--ox) var(--oy);
-  animation: bloom 7.5s ease-in-out infinite var(--play);
-  animation-delay: calc(var(--i) * 1.2s);
+  animation: bloom 4.5s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 1.05s);
 }
 @keyframes sway {
   0%, 100% { transform: rotate(0deg); }
-  32% { transform: rotate(-2.4deg); }
-  68% { transform: rotate(2.4deg); }
+  32% { transform: rotate(-8deg); }
+  68% { transform: rotate(8deg); }
+}
+@keyframes growth {
+  0% { stroke-dashoffset: 0; opacity: 0; }
+  10%, 88% { opacity: 1; }
+  100% { stroke-dashoffset: -68; opacity: 0; }
 }
 @keyframes bloom {
-  0%, 100% { transform: scale(1); }
-  40% { transform: scale(1.45); }
+  0%, 30% { transform: scale(1); }
+  46% { transform: scale(2.2); }
+  62%, 100% { transform: scale(1); }
 }
 
 /* Chrysalis: the shell opens, a butterfly climbs out, the shell closes.
@@ -787,48 +838,98 @@ a:hover {
   50% { transform: scaleX(0.66); }
 }
 
-/* Candle: the flame leans and breathes. */
+/* Candle: the flame gutters — leaning, stretching and taking light — and the
+   halo breathes with it while its dashes turn. The whole glyph brightens and
+   falls back with the flame, so the light, not just the flame, is what moves. */
+[data-motion-glyph='candle'] {
+  animation: candlelight 2.4s ease-in-out infinite var(--play);
+}
 [data-motion-glyph='candle'] [data-flame] {
-  transform-origin: 48px 40px;
-  animation: flicker 3.6s ease-in-out infinite var(--play);
+  transform-origin: 48px 41px;
+  animation: flicker 2.4s ease-in-out infinite var(--play);
+}
+[data-motion-glyph='candle'] [data-shine] {
+  transform-origin: 48px 33px;
+  /* Blurred so it reads as light thrown, not a disc drawn. */
+  filter: blur(6px);
+  animation: shine-pool 2.4s ease-in-out infinite var(--play);
 }
 [data-motion-glyph='candle'] [data-halo] {
-  animation: halo 3.6s ease-in-out infinite var(--play);
+  animation:
+    halo 2.4s ease-in-out infinite var(--play),
+    halo-turn 5s linear infinite var(--play);
 }
 
 @keyframes flicker {
-  0%, 100% { transform: scale(1, 1) skewX(0deg); }
-  22% { transform: scale(0.95, 1.06) skewX(-2.5deg); }
-  46% { transform: scale(1.04, 0.96) skewX(1.5deg); }
-  68% { transform: scale(0.97, 1.03) skewX(-1deg); }
-  84% { transform: scale(1.02, 0.99) skewX(2deg); }
+  0%, 100% { transform: scale(1, 1) skewX(0deg); filter: brightness(1); }
+  18% { transform: scale(0.86, 1.2) skewX(-8deg); filter: brightness(1.55); }
+  38% { transform: scale(1.14, 0.88) skewX(6deg); filter: brightness(1.08); }
+  60% { transform: scale(0.9, 1.14) skewX(-5deg); filter: brightness(1.45); }
+  80% { transform: scale(1.1, 0.94) skewX(7deg); filter: brightness(1.05); }
+}
+/* The pool of light the flame throws. Absent at rest, so the drawn candle is
+   the one the design drew. */
+@keyframes shine-pool {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  18% { opacity: 0.28; transform: scale(1.45); }
+  38% { opacity: 0.1; transform: scale(1.1); }
+  60% { opacity: 0.24; transform: scale(1.38); }
+  80% { opacity: 0.08; transform: scale(1.05); }
+}
+@keyframes candlelight {
+  0%, 100% { filter: brightness(1); }
+  18% { filter: brightness(1.4); }
+  38% { filter: brightness(1.05); }
+  60% { filter: brightness(1.35); }
 }
 @keyframes halo {
-  0%, 100% { opacity: 0.75; transform: scale(1); }
-  40% { opacity: 1; transform: scale(1.06); }
-  70% { opacity: 0.68; transform: scale(0.97); }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  45% { opacity: 0.2; transform: scale(1.65); }
+}
+/* 16 is two whole 3-5 dashes. */
+@keyframes halo-turn {
+  to { stroke-dashoffset: -16; }
 }
 [data-motion-glyph='candle'] [data-halo] {
   transform-origin: 48px 33px;
 }
 
-/* Magnet: the field pulses and the filings creep toward the poles, each on
-   its own heading. */
+/* Magnet: the field beats outward, and the filings are pulled the whole way
+   up to the poles, each on its own heading, where they vanish into them. */
 [data-motion-glyph='magnet'] [data-field] {
   transform-origin: 48px 48px;
-  animation: field 4.4s ease-in-out infinite var(--play);
+  animation:
+    field 3.6s ease-in-out infinite var(--play),
+    march 2.4s linear infinite var(--play);
+}
+[data-motion-glyph='magnet'] [data-field-echo] {
+  transform-origin: 48px 48px;
+  animation: field-echo 3.6s ease-out infinite var(--play);
+  animation-delay: calc(var(--i) * 1.8s);
 }
 [data-motion-glyph='magnet'] [data-filing] {
-  animation: attract 4.4s ease-in-out infinite var(--play);
-  animation-delay: calc(var(--i) * 0.5s);
+  transform-origin: var(--ox) var(--oy);
+  animation: attract 3.6s ease-in-out infinite var(--play);
+  animation-delay: calc(var(--i) * 0.22s);
 }
 @keyframes field {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.07); }
+  0%, 100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+  50% { opacity: 0.3; transform: scale(1.3); filter: brightness(2.4); }
 }
+/* Two more copies of the field lines, absent at rest, thrown outward one after
+   the other so the pull has a beat to it. */
+@keyframes field-echo {
+  0% { opacity: 0; transform: scale(1); }
+  10% { opacity: 0.9; transform: scale(1.08); }
+  70%, 100% { opacity: 0; transform: scale(1.8); }
+}
+/* Pulled the whole way up, growing as they come, and taken into the pole. */
 @keyframes attract {
-  0%, 100% { transform: translate(0, 0); }
-  55% { transform: translate(var(--dx), var(--dy)); }
+  0%, 8% { transform: translate(0, 0) scale(1); opacity: 1; }
+  58% { transform: translate(var(--dx), var(--dy)) scale(2); opacity: 1; }
+  70% { transform: translate(var(--dx), var(--dy)) scale(2); opacity: 0; }
+  90% { transform: translate(0, 0) scale(1); opacity: 0; }
+  100% { transform: translate(0, 0) scale(1); opacity: 1; }
 }
 
 /* The game: the piece hops three squares up the board, then goes back to
@@ -933,19 +1034,28 @@ a:hover {
   70% { transform: rotate(-5deg); }
 }
 
-/* Mask: it turns a little to keep facing you, and blinks once a cycle. */
+/* Mask: it turns to keep facing you, and the eyes blink and then glance both
+   ways behind it. */
 [data-motion-glyph='mask'] [data-mask] {
   transform-origin: 48px 74px;
-  animation: sway 8s ease-in-out infinite var(--play);
+  animation: turn 5.6s ease-in-out infinite var(--play);
 }
 [data-motion-glyph='mask'] [data-eye] {
   transform-origin: var(--ox) var(--oy);
-  animation: blink 8s ease-in-out infinite var(--play);
+  animation: look 5.6s ease-in-out infinite var(--play);
 }
-@keyframes blink {
-  0%, 88%, 100% { transform: scaleY(1); }
-  92% { transform: scaleY(0.1); }
-  96% { transform: scaleY(1); }
+@keyframes turn {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-7deg); }
+  68% { transform: rotate(7deg); }
+}
+@keyframes look {
+  0%, 6% { transform: translateX(0) scaleY(1); }
+  11% { transform: translateX(0) scaleY(0.08); }
+  17% { transform: translateX(0) scaleY(1); }
+  36%, 50% { transform: translateX(-2.8px) scaleY(1); }
+  66%, 80% { transform: translateX(2.8px) scaleY(1); }
+  94%, 100% { transform: translateX(0) scaleY(1); }
 }
 
 /* ── Motion ────────────────────────────────────────────────────────────── */
