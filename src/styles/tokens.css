@@ -79,8 +79,13 @@
   --panel-radius: 12px;
   --grid-gap: 11px;
   --shell-max: 1440px;
-  --column-max: 520px;
   --measure: 580px;
+  /* Breathing room above and below the shell's contents. The ring measures
+     itself against the window minus this, so it lives here rather than inline. */
+  --shell-pad-y: 34px;
+  /* Width the ring computes for one card. Set for real on .ring; the default
+     keeps type sane anywhere the ring isn't (the entry pages). */
+  --card-w: 168px;
 
   /* Glow */
   --glow-card: drop-shadow(0 0 6px rgba(240, 180, 63, 0.45));

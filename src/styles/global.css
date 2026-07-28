@@ -51,8 +51,9 @@ a:hover {
 
 .shell {
   min-height: 100vh;
+  min-height: 100svh;
   background: var(--field-wide);
-  padding: 34px 3vw;
+  padding: var(--shell-pad-y) 3vw;
   display: flex;
   align-items: center;
 }
@@ -65,9 +66,22 @@ a:hover {
 
 /* ── The ring ──────────────────────────────────────────────────────────── */
 
+/* Eight columns, four rows, the intro held in the middle. A card is sized from
+   whichever runs out first — the window's width or its height — so the whole
+   ring stands inside the viewport at any desktop size, with nothing to scroll
+   to. Everything else on the page is measured off that one width. */
 .ring {
+  --cols: 8;
+  --rows: 4;
+  --room-w: min(var(--shell-max), calc(94vw - 16px));
+  --room-h: calc(100vh - 2 * var(--shell-pad-y));
+  --card-w: min(
+    calc((var(--room-w) - (var(--cols) - 1) * var(--grid-gap)) / var(--cols)),
+    calc((var(--room-h) - (var(--rows) - 1) * var(--grid-gap)) * var(--card-ratio) / var(--rows))
+  );
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--cols), var(--card-w));
+  justify-content: center;
   gap: var(--grid-gap);
   grid-auto-flow: dense;
 }
@@ -75,16 +89,21 @@ a:hover {
 /* ── Card ──────────────────────────────────────────────────────────────── */
 
 .card {
+  width: 100%;
   aspect-ratio: var(--card-ratio);
+  /* Everything inside the card is measured against the card, so one card scales
+     as a whole from the ring down to the narrowest phone column. */
+  container-type: inline-size;
   border-radius: var(--card-radius);
   border: 1px solid var(--rule-outer);
   background: var(--card-face);
-  padding: 5px;
+  padding: min(5px, 3.2%);
   display: block;
   color: inherit;
   /* Hold the ratio. The intro sets the height of the ring's middle rows, and
      without this the cards beside it stretch out of proportion. */
   align-self: center;
+  justify-self: center;
   transition:
     transform 0.3s cubic-bezier(0.2, 0.8, 0.25, 1),
     box-shadow 0.3s,
@@ -104,7 +123,7 @@ a:hover {
   height: 100%;
   border: 1px solid var(--rule-inner);
   border-radius: var(--card-radius-inner);
-  padding: 10px 7px 9px;
+  padding: 6.2cqw 4.4cqw 5.6cqw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -127,17 +146,18 @@ a:hover {
 }
 
 .card__name {
-  font: 500 11px/1.3 var(--serif);
+  font: 500 clamp(7px, 6.9cqw, 15px) / 1.3 var(--serif);
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--gold);
 }
 
 .card__line {
-  font: italic 400 9.5px/1.35 var(--serif);
+  font: italic 400 clamp(6px, 5.9cqw, 12.5px) / 1.38 var(--serif);
   color: var(--text-faint);
-  margin-top: 4px;
-  min-height: 26px;
+  margin-top: 2.5cqw;
+  /* Room for two lines, so the names sit on one line across a row. */
+  min-height: 16cqw;
 }
 
 /* Spin on hover, exactly as the design does it. */
@@ -166,6 +186,8 @@ a:hover {
 
 /* ── Intro ─────────────────────────────────────────────────────────────── */
 
+/* The intro takes its type from the card width too, so it shrinks with the ring
+   instead of pushing the middle two rows past the bottom of the window. */
 .intro {
   grid-column: 2 / 8;
   grid-row: 2 / 4;
@@ -174,18 +196,18 @@ a:hover {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 10px 44px;
+  padding: 10px min(44px, 5%);
 }
 
 .intro__stars {
   color: var(--gold-label);
-  font-size: 11px;
+  font-size: clamp(7px, calc(var(--card-w) * 0.065), 11px);
   letter-spacing: 0.5em;
 }
 
 .intro__title {
-  margin: 15px 0 0;
-  font: 500 23px/1.3 var(--serif);
+  margin: 0.65em 0 0;
+  font: 500 clamp(14px, calc(var(--card-w) * 0.135), 24px) / 1.3 var(--serif);
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--gold);
@@ -193,8 +215,8 @@ a:hover {
 
 .intro__body {
   max-width: var(--measure);
-  margin: 15px 0 0;
-  font: 400 12.5px/1.75 var(--serif);
+  margin: 1.2em 0 0;
+  font: 400 clamp(9.5px, calc(var(--card-w) * 0.0735), 13px) / 1.75 var(--serif);
   color: var(--text-quiet);
   text-wrap: pretty;
 }
@@ -204,12 +226,12 @@ a:hover {
   height: 1px;
   background: var(--rule-panel);
   border: 0;
-  margin: 18px auto 0;
+  margin: clamp(8px, calc(var(--card-w) * 0.105), 18px) auto 0;
 }
 
 .draw {
-  margin-top: 13px;
-  font: 500 9.5px var(--mono);
+  margin-top: clamp(6px, calc(var(--card-w) * 0.076), 13px);
+  font: 500 clamp(7px, calc(var(--card-w) * 0.056), 10px) var(--mono);
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--gold);
@@ -414,73 +436,105 @@ a:hover {
   text-transform: uppercase;
 }
 
-/* ── Narrow ────────────────────────────────────────────────────────────── */
+/* ── The simpler grid ──────────────────────────────────────────────────── */
 
-@media (max-width: 900px) {
+/* Past the cutoff the ring gives up its shape: the intro moves to the top and
+   the twenty cards run as a plain grid, shedding a column at a time as the
+   window narrows. This is the one place the page scrolls. It has to — the ring
+   holds a whole window because the intro sits inside it, sharing rows with the
+   cards; once the intro is a band across the top, twenty cards below it in a
+   phone-sized window would have to shrink past reading size to fit. The cutoff
+   sits where that trade turns: above it, the ring; below it, a card you can
+   actually read and a thumb to scroll with. */
+@media (max-width: 859px) {
   .shell {
+    --shell-pad-y: 26px;
     background: var(--field-narrow);
-    padding: 44px 20px 40px;
+    padding: var(--shell-pad-y) 18px;
     align-items: flex-start;
   }
 
-  .inner {
-    max-width: var(--column-max);
-  }
-
   .ring {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    --cols: 4;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    /* The intro takes the first row across; the cards fall in underneath. */
+    grid-template-rows: auto;
+    gap: 14px;
   }
 
   .intro {
-    order: -1;
     grid-column: 1 / -1;
-    grid-row: auto;
-    padding: 0 0 14px;
+    grid-row: 1;
+    padding: 0 0 18px;
+  }
+
+  .intro__stars {
+    font-size: 11px;
   }
 
   .intro__title {
     margin-top: 14px;
-    font-size: 21px;
+    font-size: clamp(19px, 3.2vw, 23px);
     letter-spacing: 0.22em;
   }
 
   .intro__body {
-    font-size: 13px;
-    text-align: left;
+    margin-top: 15px;
+    font-size: clamp(12px, 1.5vw, 13.5px);
+  }
+
+  .rule {
+    margin-top: 18px;
   }
 
   .draw {
+    margin-top: 13px;
     font-size: 10px;
   }
+}
 
-  .card__face {
-    padding: 14px 10px 12px;
+@media (max-width: 620px) {
+  .shell {
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
-  .card__glyph-in {
-    width: 66%;
+  .ring {
+    --cols: 3;
+    gap: 11px;
   }
 
-  .card__name {
-    font-size: 14px;
+  .intro__body {
+    text-align: left;
+  }
+}
+
+@media (max-width: 430px) {
+  .ring {
+    --cols: 2;
+  }
+
+  /* Tight enough that the title needs its tracking back to hold one line. */
+  .intro__title {
+    font-size: 17px;
     letter-spacing: 0.15em;
   }
+}
 
-  .card__line {
-    font-size: 11.5px;
-    line-height: 1.4;
-    min-height: 32px;
-  }
-
-  /* The design auto-animates the glyphs on narrow screens. */
+/* The design auto-animates the glyphs where there is no hover to spend them on.
+   Held to the simple grid, so the ring keeps its stillness until then. */
+@media (max-width: 859px) {
   .card [data-wheel] {
     animation: spin 7s linear infinite;
   }
   .card__glyph-in {
     animation: glowpulse 2.8s ease-in-out infinite alternate;
   }
+}
 
+/* ── Narrow ────────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
   .entry__body {
     padding: 20px 22px 22px;
   }
