@@ -61,13 +61,15 @@ Flywheel is already final and carries the finished copy verbatim.
 ## Where the design and the brief disagreed
 
 The design governs visuals; the brief governs content, structure, and behavior.
-Six places needed a call, and two are worth a second look.
+Six places needed a call. All six are settled.
 
 1. **Entry pages.** The design opens a card into a panel in the middle of the
    grid. The brief asks for one page per metaphor. Built as real routed pages,
    using the design's panel styling for the entry anatomy.
-2. **Card 2's name.** The design calls it "Helm"; the brief calls it "Steering
-   wheel". Used the brief's name with the design's artwork.
+2. **Card 2's name.** The design calls it "Helm"; the brief's table calls it
+   "Steering wheel". Settled on "Helm", per review: every other card carries the
+   same name in both, and this was the one exception. The old `/steering-wheel/`
+   address redirects.
 3. **Section labels.** The design has four (reach for it when / it asks you /
    the mechanics / where it breaks); the brief has three, with the question
    folded into "its moment". Used the brief's three. Labels are written in
