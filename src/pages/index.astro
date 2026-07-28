@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro'
 import Card from '../components/Card.astro'
 import { metaphors } from '../data/metaphors.js'
 import { SITE_NAME, SITE_TAGLINE, INTRO } from '../site.js'
+import { home } from '../href.js'
 
 // The ring: eight across the top, four down the sides, eight across the
 // bottom, with the intro held in the middle. The order is the collection's
@@ -15,7 +16,7 @@ const ringBottom = metaphors.slice(12, 20)
 const allSlugs = metaphors.map((m) => m.slug).join(',')
 ---
 
-<Base title={SITE_NAME} description={SITE_TAGLINE} canonical="/">
+<Base title={SITE_NAME} description={SITE_TAGLINE} canonical={home()} ogSlug="home">
   <main class="shell" id="main">
     <div class="inner">
       <div class="ring">

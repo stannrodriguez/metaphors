@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro'
 import { metaphors } from '../data/metaphors.js'
 import { SITE_NAME } from '../site.js'
+import { home, asset } from '../href.js'
 
 const allSlugs = metaphors.map((m) => m.slug).join(',')
 ---
@@ -9,7 +10,8 @@ const allSlugs = metaphors.map((m) => m.slug).join(',')
 <Base
   title={`Not the territory · ${SITE_NAME}`}
   description="This page is not in the collection."
-  canonical="/404/"
+  canonical={asset("404/")}
+  ogSlug="home"
 >
   <main class="shell" id="main">
     <div class="inner lost">
@@ -20,7 +22,7 @@ const allSlugs = metaphors.map((m) => m.slug).join(',')
       </p>
       <hr class="rule" />
       <p class="lost__links">
-        <a href="/">All twenty</a>
+        <a href={home()}>All twenty</a>
         <button class="draw" type="button" data-draw={allSlugs}>Draw a card &rarr;</button>
       </p>
     </div>

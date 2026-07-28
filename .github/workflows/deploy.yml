@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, claude/metaphors-site-build-x3w6ll]
+  workflow_dispatch:
+
+# Let the deployment write to Pages, and keep the token scoped to that.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. In-progress runs finish rather than being cancelled,
+# so a half-published site never sticks.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # The site URL and base path come from the repository itself, so a rename
+      # or a fork needs no edit here.
+      - name: Build
+        env:
+          SITE: https://${{ github.repository_owner }}.github.io
+          BASE: /${{ github.event.repository.name }}
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

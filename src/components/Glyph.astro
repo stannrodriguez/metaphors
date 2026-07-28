@@ -2,21 +2,22 @@
 import { buildGlyphs } from '../data/glyphs.js'
 
 interface Props {
-  glyph: string
+  /** The metaphor's slug; glyphs are keyed by it. */
+  slug: string
   /** Opts an entry into the two motions the brief allows: the chrysalis
       opening and the candle's flicker. */
   animate?: boolean
   class?: string
 }
-const { glyph, animate = false, class: className } = Astro.props
+const { slug, animate = false, class: className } = Astro.props
 
 const glyphs = buildGlyphs(
   { w: 'var(--glyph-w)', d: 'var(--glyph-d)', a: 'var(--glyph-a)' },
   animate,
 )
 
-const inner = glyphs[glyph] ?? glyphs.northstar
-const motion = animate && (glyph === 'chrysalis' || glyph === 'candle') ? glyph : undefined
+const inner = glyphs[slug] ?? glyphs['north-star']
+const motion = animate && (slug === 'chrysalis' || slug === 'candle') ? slug : undefined
 ---
 
 <svg

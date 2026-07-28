@@ -246,7 +246,7 @@ a:hover {
 }
 
 .entry__illo {
-  background: var(--family-field);
+  background: var(--card-face);
   border-bottom: 1px solid var(--rule-hair);
   padding: 44px 20px;
   display: flex;
@@ -270,7 +270,7 @@ a:hover {
   font: 500 8.5px var(--mono);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--family-accent);
+  color: var(--gold-label);
 }
 
 .entry__name {

@@ -5,7 +5,7 @@
 // be literal values, since an SVG opened outside the page has no variables).
 
 export function buildGlyphs({ w, d, a }, animate = false) {
-  const helmSpokes = [0, 45, 90, 135, 180, 225, 270, 315]
+  const wheelSpokes = [0, 45, 90, 135, 180, 225, 270, 315]
     .map(
       (t) =>
         `<line x1="48" y1="29" x2="48" y2="19" stroke="${w}" stroke-width="2.5" stroke-linecap="round" transform="rotate(${t} 48 48)"/>`,
@@ -17,18 +17,18 @@ export function buildGlyphs({ w, d, a }, animate = false) {
     .join('')
 
   return {
-    northstar: `
+    'north-star': `
       <path d="M48 16 L54 42 L80 48 L54 54 L48 80 L42 54 L16 48 L42 42 Z" stroke="${w}" stroke-width="3" fill="none" stroke-linejoin="round"/>
       <circle cx="48" cy="48" r="3" fill="${a}"/>
       <circle cx="24" cy="24" r="1.8" fill="${d}"/>
       <circle cx="76" cy="22" r="2.2" fill="${d}"/>
       <circle cx="78" cy="74" r="1.6" fill="${d}"/>`,
 
-    helm: `
+    'steering-wheel': `
       <g data-wheel>
         <circle cx="48" cy="48" r="19" stroke="${w}" stroke-width="3" fill="none" stroke-linecap="round"/>
         <circle cx="48" cy="48" r="4.5" fill="${w}"/>
-        ${helmSpokes}
+        ${wheelSpokes}
         <circle cx="48" cy="17" r="2.8" fill="${a}"/>
       </g>`,
 
@@ -118,7 +118,7 @@ export function buildGlyphs({ w, d, a }, animate = false) {
       <circle cx="30" cy="76" r="1.5" fill="${d}"/>
       <circle cx="70" cy="74" r="1.7" fill="${d}"/>`,
 
-    game: `
+    'the-game': `
       <rect x="22" y="42" width="36" height="36" stroke="${w}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
       <path d="M34 42 L34 78 M46 42 L46 78 M22 54 L58 54 M22 66 L58 66" stroke="${d}" stroke-width="1.5" fill="none"/>
       <circle cx="70" cy="44" r="5" fill="${a}"/>
@@ -130,13 +130,13 @@ export function buildGlyphs({ w, d, a }, animate = false) {
       <path d="M40 74 L40 44 Q40 32 48 32 Q56 32 56 44 L56 74" stroke="${a}" stroke-width="1.6" stroke-dasharray="3 4" fill="none" stroke-linecap="round"/>
       <line x1="28" y1="74" x2="68" y2="74" stroke="${w}" stroke-width="2.5" stroke-linecap="round"/>`,
 
-    thindeck: `
+    deck: `
       <rect x="24" y="52" width="34" height="22" rx="4" fill="${d}" opacity="0.35"/>
       <rect x="31" y="44" width="34" height="22" rx="4" fill="${d}" opacity="0.6"/>
       <rect x="38" y="36" width="34" height="22" rx="4" fill="${w}" opacity="0.85"/>
       <rect x="45" y="28" width="34" height="22" rx="4" stroke="${a}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
 
-    door1: `
+    door: `
       <rect x="34" y="24" width="28" height="48" rx="1" stroke="${w}" stroke-width="3" fill="none" stroke-linecap="round"/>
       <circle cx="56" cy="50" r="2.6" fill="${a}"/>
       <line x1="32" y1="82" x2="64" y2="82" stroke="${a}" stroke-width="2" stroke-dasharray="4 3"/>

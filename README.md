@@ -19,8 +19,9 @@ draw and the arrow keys, together well under 1 KB.
 | --- | --- |
 | Site name, tagline, intro copy | `src/site.js` |
 | The twenty entries | `src/data/metaphors.js` |
-| Family names and colors | `src/data/families.js` |
-| Glyph path data | `src/data/glyphs.js` |
+| Family names | `src/data/families.js` |
+| Glyph path data, keyed by slug | `src/data/glyphs.js` |
+| Internal link helpers | `src/href.js` |
 | Colors, type, geometry | `src/styles/tokens.css` |
 | Layout and components | `src/styles/global.css` |
 | Social images | `src/pages/og/[slug].svg.js` |
@@ -34,11 +35,12 @@ so a longer or shorter name needs no other edit.
 ### Reskinning
 
 Every visual value traces to `src/styles/tokens.css`, which is a direct
-transcription of the design file. Family colors live in two places that must
-stay in step: the `--fam-*` custom properties in `tokens.css` and the `field` /
-`accent` values in `src/data/families.js`. The data file's copies exist because
-the social images render outside the page, where CSS custom properties do not
-resolve.
+transcription of the design file. The site wears one gold-on-dark skin; families
+group and label the collection but carry no color.
+
+Glyphs are keyed by slug, so adding an entry means adding one object to
+`src/data/metaphors.js` and one entry to `src/data/glyphs.js` under the same
+key. There is no separate glyph field to keep in step.
 
 ### Marking copy as final
 
@@ -73,17 +75,13 @@ Six places needed a call, and two are worth a second look.
    the voice rules while the page keeps the design's look.
 4. **Flywheel copy.** The design file carries older Flywheel text. Used the
    brief's finished copy, verbatim.
-5. **The draw slot.** ⚠️ The brief puts it in the final grid cell; the design
-   puts "Draw a card →" inside the centre intro panel, and the twenty cards fill
-   the ring exactly with no spare cell. Followed the design, since adding a
-   twenty-first cell would break the ring. Say the word and it can move.
-6. **Family color.** ⚠️ The brief asks for cards grouped by family color and a
-   family-color illustration background. The design is a single gold-on-dark
-   skin with no family hues at all. The card grid stays uniform gold, and the
-   ring order already runs family by family. Five night-range family colors were
-   added for the places the brief names specifically: the entry page's
-   illustration area, its family label, and the per-entry `theme-color`. Pushing
-   family color onto the cards themselves is a one-file change if you want it.
+5. **The draw slot.** The brief puts it in the final grid cell; the design puts
+   "Draw a card →" inside the centre intro panel, and the twenty cards fill the
+   ring exactly with no spare cell. Confirmed: it lives in the intro panel.
+6. **Family color.** The brief asks for cards grouped by family color and a
+   family-color illustration background; the design is a single gold-on-dark
+   skin with no family hues. Confirmed: no family color. Families still group
+   the collection, in the ring order and in the label on each entry page.
 
 One deliberate deviation from the design: the "Related" label was lifted from
 `rgba(240,233,218,.4)` to `.55`, which takes it from 3.4:1 to 5.3:1 against the
@@ -96,10 +94,46 @@ Lighthouse, mobile emulation, against the production build:
 
 | Page | Performance | Accessibility | Best practices | SEO |
 | --- | --- | --- | --- | --- |
-| Home | 97 | 100 | 100 | 100 |
+| Home | 96 | 100 | 100 | 100 |
 | `/flywheel/` | 96 | 100 | 100 | 100 |
-| `/chrysalis/` | 97 | 100 | 100 | 100 |
+| `/chrysalis/` | 96 | 100 | 100 | 100 |
 
 Verified in Chromium: twenty consecutive draws return twenty distinct cards and
 the twenty-first starts a fresh pass; arrow keys step and wrap; all twenty card
 links and all forty related chips resolve. Laid out at 380px and 1440px.
+
+## Deploying to GitHub Pages
+
+`.github/workflows/deploy.yml` builds the site and publishes it. It runs on
+every push to `main` (and to the current working branch), or on demand from the
+Actions tab.
+
+One setting has to be turned on by hand, once:
+
+**Settings → Pages → Build and deployment → Source: GitHub Actions.**
+
+Leave it on "Deploy from a branch" and the workflow will build but never
+publish. After that, pushing deploys, and the URL appears on the workflow run
+and under Settings → Pages.
+
+The site lands at `https://<owner>.github.io/<repo>/`. The workflow reads both
+halves from the repository itself, so renaming or forking needs no edit.
+
+### A custom domain
+
+1. Add a `public/CNAME` file containing the bare domain, e.g. `metaphors.xyz`.
+2. Set `SITE` to `https://metaphors.xyz` and `BASE` to `/` in the workflow's
+   build step.
+3. Point the DNS at GitHub Pages and set the domain under Settings → Pages.
+
+Step 2 matters: on a custom domain the site sits at the root, and leaving the
+base as `/<repo>/` breaks every internal link.
+
+### Why links go through a helper
+
+Pages serves this from a subpath, so no internal URL can be written as a bare
+`/whatever/`. `src/href.js` wraps `import.meta.env.BASE_URL`, and pages,
+components, and the browser script all route through it. Fonts are imported as
+modules rather than referenced from `public/`, which lets the build hash them
+and apply the base inside the stylesheet. Adding a raw absolute path anywhere
+will work locally and 404 in production.

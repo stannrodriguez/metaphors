@@ -1,14 +1,21 @@
 ---
 import '../styles/global.css'
 import { SITE_NAME } from '../site.js'
+import { asset, home } from '../href.js'
+
+// Imported rather than referenced by path so the build hashes them and applies
+// the base; the preload hrefs then match what the stylesheet actually requests.
+import newsreaderUrl from '../fonts/newsreader.woff2?url'
+import plexMonoUrl from '../fonts/plex-mono-500.woff2?url'
 
 interface Props {
   title: string
   description: string
-  /** Family key, used for the accent color in social metadata. */
-  accent?: string
+  /** Path for the canonical URL, already carrying the base. */
+  canonical: string
+  /** Basename of the social image under /og/. */
+  ogSlug: string
   ogType?: string
-  canonical?: string
   /** Set on entry pages so the arrow keys know where to go. */
   slug?: string
   prev?: string
@@ -18,16 +25,16 @@ interface Props {
 const {
   title,
   description,
-  accent = '#d8b25e',
+  canonical,
+  ogSlug,
   ogType = 'website',
-  canonical = Astro.url.pathname,
   slug,
   prev,
   next,
 } = Astro.props
 
 const canonicalURL = new URL(canonical, Astro.site)
-const ogImage = new URL(`/og/${canonical.replace(/\//g, '') || 'home'}.svg`, Astro.site)
+const ogImage = new URL(asset(`og/${ogSlug}.svg`), Astro.site)
 ---
 
 <!doctype html>
@@ -37,24 +44,12 @@ const ogImage = new URL(`/og/${canonical.replace(/\//g, '') || 'home'}.svg`, Ast
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content={accent} />
+    <meta name="theme-color" content="#0a0705" />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
 
-    <link
-      rel="preload"
-      href="/fonts/newsreader.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/plex-mono-500.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="preload" href={newsreaderUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plexMonoUrl} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:type" content={ogType} />
@@ -67,7 +62,7 @@ const ogImage = new URL(`/og/${canonical.replace(/\//g, '') || 'home'}.svg`, Ast
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
   </head>
-  <body data-slug={slug} data-prev={prev} data-next={next}>
+  <body data-slug={slug} data-prev={prev} data-next={next} data-home={home()}>
     <a class="skip" href="#main">Skip to content</a>
     <slot />
 
@@ -75,6 +70,7 @@ const ogImage = new URL(`/og/${canonical.replace(/\//g, '') || 'home'}.svg`, Ast
       // ── The draw ──────────────────────────────────────────────────────
       // Random, and it does not repeat a card until every card has come up.
       const KEY = 'mwlb:drawn'
+      const BASE = document.body.dataset.home || '/'
 
       function readDrawn(all: string[]): string[] {
         try {
@@ -110,7 +106,7 @@ const ogImage = new URL(`/og/${canonical.replace(/\//g, '') || 'home'}.svg`, Ast
           if (all.length === 0) return
           event.preventDefault()
           const current = document.body.dataset.slug || null
-          window.location.href = `/${pick(all, current)}/`
+          window.location.href = `${BASE}${pick(all, current)}/`
         })
       })
 
@@ -132,7 +128,7 @@ const ogImage = new URL(`/og/${canonical.replace(/\//g, '') || 'home'}.svg`, Ast
             window.location.href = next
           } else if (event.key === 'Escape') {
             event.preventDefault()
-            window.location.href = '/'
+            window.location.href = BASE
           }
         })
       }
