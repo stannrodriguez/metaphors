@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro'
+import { metaphors } from '../data/metaphors.js'
+import { SITE_NAME } from '../site.js'
+
+const allSlugs = metaphors.map((m) => m.slug).join(',')
+---
+
+<Base
+  title={`Not the territory · ${SITE_NAME}`}
+  description="This page is not in the collection."
+  canonical="/404/"
+>
+  <main class="shell" id="main">
+    <div class="inner lost">
+      <p class="intro__stars" aria-hidden="true">✦ ✦ ✦</p>
+      <h1 class="intro__title">Not the territory</h1>
+      <p class="intro__body">
+        Every map drops detail to stay legible. This address fell out of this one.
+      </p>
+      <hr class="rule" />
+      <p class="lost__links">
+        <a href="/">All twenty</a>
+        <button class="draw" type="button" data-draw={allSlugs}>Draw a card &rarr;</button>
+      </p>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .lost {
+    max-width: 580px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .lost__links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    margin: 13px 0 0;
+    font: 500 9.5px var(--mono);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+  }
+  .lost__links .draw {
+    margin: 0;
+  }
+</style>

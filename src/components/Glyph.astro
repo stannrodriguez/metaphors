@@ -1,0 +1,36 @@
+---
+import { buildGlyphs } from '../data/glyphs.js'
+
+interface Props {
+  glyph: string
+  /** Opts an entry into the two motions the brief allows: the chrysalis
+      opening and the candle's flicker. */
+  animate?: boolean
+  class?: string
+}
+const { glyph, animate = false, class: className } = Astro.props
+
+const glyphs = buildGlyphs(
+  { w: 'var(--glyph-w)', d: 'var(--glyph-d)', a: 'var(--glyph-a)' },
+  animate,
+)
+
+const inner = glyphs[glyph] ?? glyphs.northstar
+const motion = animate && (glyph === 'chrysalis' || glyph === 'candle') ? glyph : undefined
+---
+
+<svg
+  viewBox="0 0 96 96"
+  class={className}
+  data-motion-glyph={motion}
+  aria-hidden="true"
+  focusable="false"
+  set:html={inner}
+/>
+
+<style>
+  svg {
+    width: 100%;
+    display: block;
+  }
+</style>

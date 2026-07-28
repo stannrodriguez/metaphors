@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro'
+import Card from '../components/Card.astro'
+import { metaphors } from '../data/metaphors.js'
+import { SITE_NAME, SITE_TAGLINE, INTRO } from '../site.js'
+
+// The ring: eight across the top, four down the sides, eight across the
+// bottom, with the intro held in the middle. The order is the collection's
+// own, which already runs family by family.
+const ringTop = metaphors.slice(0, 8)
+const left = [metaphors[8], metaphors[10]]
+const right = [metaphors[9], metaphors[11]]
+const ringBottom = metaphors.slice(12, 20)
+
+const allSlugs = metaphors.map((m) => m.slug).join(',')
+---
+
+<Base title={SITE_NAME} description={SITE_TAGLINE} canonical="/">
+  <main class="shell" id="main">
+    <div class="inner">
+      <div class="ring">
+        {ringTop.map((m) => <Card metaphor={m} />)}
+
+        <Card metaphor={left[0]} />
+
+        <section class="intro">
+          <p class="intro__stars" aria-hidden="true">✦ ✦ ✦</p>
+          <h1 class="intro__title">{SITE_NAME}</h1>
+          <p class="intro__body">{INTRO}</p>
+          <hr class="rule" />
+          <button class="draw" type="button" data-draw={allSlugs}>Draw a card &rarr;</button>
+        </section>
+
+        <Card metaphor={right[0]} />
+        <Card metaphor={left[1]} />
+        <Card metaphor={right[1]} />
+
+        {ringBottom.map((m) => <Card metaphor={m} />)}
+      </div>
+    </div>
+  </main>
+</Base>

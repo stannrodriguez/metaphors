@@ -1,42 +1,37 @@
-// Family colors. This is the only place a family's palette is defined; the
-// design skin swaps these values and nothing else needs to move.
+// The five families.
+//
+// The design ships one gold-on-dark skin with no per-family hues, so these
+// colors stay out of the card grid and appear only where the brief calls for a
+// family color: the entry page's illustration area, its family label, and the
+// per-entry theme color. All five sit in the design's night range.
+//
+// Keep these in step with the --fam-* custom properties in styles/tokens.css.
 export const families = {
   'direction-and-time': {
     name: 'Direction and time',
-    tint: '#bed3e0',
-    strong: '#2f5b78',
-    deep: '#1d3a4e',
+    field: '#111c26',
+    accent: '#8fb6cf',
   },
   'momentum-and-capacity': {
     name: 'Momentum and capacity',
-    tint: '#f0cfa0',
-    strong: '#8a5a1a',
-    deep: '#5a3a0f',
+    field: '#241a0b',
+    accent: '#e2b264',
   },
   growth: {
     name: 'Growth',
-    tint: '#c3dbb6',
-    strong: '#3f6b39',
-    deep: '#284526',
+    field: '#131f16',
+    accent: '#8fbe86',
   },
   'play-and-terrain': {
     name: 'Play and terrain',
-    tint: '#e8c3c9',
-    strong: '#8f3f4d',
-    deep: '#5e2832',
+    field: '#241119',
+    accent: '#d98fa0',
   },
   'inner-weather': {
     name: 'Inner weather',
-    tint: '#cdc8de',
-    strong: '#4d4483',
-    deep: '#322b57',
+    field: '#171430',
+    accent: '#a79ad8',
   },
 }
 
-export const familyOrder = [
-  'direction-and-time',
-  'momentum-and-capacity',
-  'growth',
-  'play-and-terrain',
-  'inner-weather',
-]
+export const familyOrder = Object.keys(families)

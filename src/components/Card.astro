@@ -1,0 +1,23 @@
+---
+import Glyph from './Glyph.astro'
+
+interface Props {
+  metaphor: {
+    slug: string
+    name: string
+    oneLiner: string
+    glyph: string
+  }
+}
+const { metaphor } = Astro.props
+---
+
+<a class="card" href={`/${metaphor.slug}/`}>
+  <span class="card__face">
+    <span class="card__glyph">
+      <span class="card__glyph-in"><Glyph glyph={metaphor.glyph} /></span>
+    </span>
+    <span class="card__name">{metaphor.name}</span>
+    <span class="card__line">{metaphor.oneLiner}</span>
+  </span>
+</a>

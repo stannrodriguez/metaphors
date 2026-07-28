@@ -1,0 +1,614 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  font-family: var(--serif);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--gold-lit);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-lit);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--panel-face);
+  border: 1px solid var(--rule-panel);
+  border-radius: 0 0 8px 0;
+  font: 500 11px var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.skip:focus {
+  left: 0;
+}
+
+/* ── Shell ─────────────────────────────────────────────────────────────── */
+
+.shell {
+  min-height: 100vh;
+  background: var(--field-wide);
+  padding: 34px 3vw;
+  display: flex;
+  align-items: center;
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin: 0 auto;
+}
+
+/* ── The ring ──────────────────────────────────────────────────────────── */
+
+.ring {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  grid-auto-flow: dense;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────── */
+
+.card {
+  aspect-ratio: var(--card-ratio);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--rule-outer);
+  background: var(--card-face);
+  padding: 5px;
+  display: block;
+  color: inherit;
+  /* Hold the ratio. The intro sets the height of the ring's middle rows, and
+     without this the cards beside it stretch out of proportion. */
+  align-self: center;
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 0.3s,
+    filter 0.35s,
+    opacity 0.35s;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow: var(--lift-shadow);
+  position: relative;
+  z-index: 2;
+}
+
+.card__face {
+  height: 100%;
+  border: 1px solid var(--rule-inner);
+  border-radius: var(--card-radius-inner);
+  padding: 10px 7px 9px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card__glyph {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.card__glyph-in {
+  display: block;
+  width: 72%;
+  filter: var(--glyph-filter) var(--glow-card);
+}
+
+.card__name {
+  font: 500 11px/1.3 var(--serif);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.card__line {
+  font: italic 400 9.5px/1.35 var(--serif);
+  color: var(--text-faint);
+  margin-top: 4px;
+  min-height: 26px;
+}
+
+/* Spin on hover, exactly as the design does it. */
+[data-wheel] {
+  transform-origin: 48px 48px;
+}
+.card:hover [data-wheel],
+.card:focus-visible [data-wheel] {
+  animation: spin 5s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glowpulse {
+  from {
+    filter: var(--glyph-filter) drop-shadow(0 0 3px rgba(240, 180, 63, 0.25));
+  }
+  to {
+    filter: var(--glyph-filter) drop-shadow(0 0 12px rgba(240, 180, 63, 0.8));
+  }
+}
+
+/* ── Intro ─────────────────────────────────────────────────────────────── */
+
+.intro {
+  grid-column: 2 / 8;
+  grid-row: 2 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 44px;
+}
+
+.intro__stars {
+  color: var(--gold-label);
+  font-size: 11px;
+  letter-spacing: 0.5em;
+}
+
+.intro__title {
+  margin: 15px 0 0;
+  font: 500 23px/1.3 var(--serif);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.intro__body {
+  max-width: var(--measure);
+  margin: 15px 0 0;
+  font: 400 12.5px/1.75 var(--serif);
+  color: var(--text-quiet);
+  text-wrap: pretty;
+}
+
+.rule {
+  width: 40px;
+  height: 1px;
+  background: var(--rule-panel);
+  border: 0;
+  margin: 18px auto 0;
+}
+
+.draw {
+  margin-top: 13px;
+  font: 500 9.5px var(--mono);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: none;
+  border: 0;
+  padding: 6px 4px;
+  cursor: pointer;
+  font-family: var(--mono);
+}
+
+/* ── Entry page ────────────────────────────────────────────────────────── */
+
+.entry {
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto;
+  border: 1px solid var(--rule-panel);
+  border-radius: var(--panel-radius);
+  background: var(--panel-face);
+  box-shadow: var(--panel-shadow);
+  overflow: hidden;
+  animation: fadein 0.35s ease;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.entry__illo {
+  background: var(--family-field);
+  border-bottom: 1px solid var(--rule-hair);
+  padding: 44px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.entry__illo-in {
+  display: block;
+  width: 200px;
+  max-width: 46vw;
+  filter: var(--glyph-filter) var(--glow-panel);
+}
+
+.entry__body {
+  padding: 22px 34px 26px;
+}
+
+.entry__family {
+  font: 500 8.5px var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--family-accent);
+}
+
+.entry__name {
+  margin: 8px 0 0;
+  font: 500 26px/1.25 var(--serif);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.entry__line {
+  font: italic 400 14.5px/1.45 var(--serif);
+  color: var(--text-soft);
+  margin-top: 6px;
+}
+
+.entry__rule {
+  height: 1px;
+  background: var(--rule-hair);
+  border: 0;
+  margin: 16px 0 2px;
+}
+
+.sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 32px;
+  margin-top: 14px;
+}
+
+.section__label {
+  font: 500 8.5px var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-label);
+  margin: 0;
+}
+
+.section__text {
+  margin: 5px 0 0;
+  font: 400 12.5px/1.6 var(--serif);
+  color: var(--text-body);
+  text-wrap: pretty;
+}
+
+.section__ask {
+  margin: 7px 0 0;
+  font: italic 400 12.5px/1.6 var(--serif);
+  color: var(--text-soft);
+  text-wrap: pretty;
+}
+
+.entry__foot {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-hair);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.related {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.related__label {
+  font: 500 8px var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.chip {
+  display: inline-block;
+  border: 1px solid var(--rule-chip);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font: italic 400 11px var(--serif);
+  color: var(--gold);
+  transition: border-color 0.25s, color 0.25s;
+}
+.chip:hover {
+  border-color: var(--gold);
+}
+
+.draft {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: 3px;
+  border: 1px solid var(--rule-chip);
+  border-radius: 3px;
+  padding: 2px 6px;
+  font: 500 7.5px var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* ── Entry navigation ──────────────────────────────────────────────────── */
+
+.entrynav {
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font: 500 9px var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.entrynav a,
+.entrynav .draw {
+  color: var(--gold);
+  font: 500 9px var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.entrynav__side {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.kbd-hint {
+  color: var(--text-ghost);
+  font: 400 8.5px var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ── Narrow ────────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .shell {
+    background: var(--field-narrow);
+    padding: 44px 20px 40px;
+    align-items: flex-start;
+  }
+
+  .inner {
+    max-width: var(--column-max);
+  }
+
+  .ring {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .intro {
+    order: -1;
+    grid-column: 1 / -1;
+    grid-row: auto;
+    padding: 0 0 14px;
+  }
+
+  .intro__title {
+    margin-top: 14px;
+    font-size: 21px;
+    letter-spacing: 0.22em;
+  }
+
+  .intro__body {
+    font-size: 13px;
+    text-align: left;
+  }
+
+  .draw {
+    font-size: 10px;
+  }
+
+  .card__face {
+    padding: 14px 10px 12px;
+  }
+
+  .card__glyph-in {
+    width: 66%;
+  }
+
+  .card__name {
+    font-size: 14px;
+    letter-spacing: 0.15em;
+  }
+
+  .card__line {
+    font-size: 11.5px;
+    line-height: 1.4;
+    min-height: 32px;
+  }
+
+  /* The design auto-animates the glyphs on narrow screens. */
+  .card [data-wheel] {
+    animation: spin 7s linear infinite;
+  }
+  .card__glyph-in {
+    animation: glowpulse 2.8s ease-in-out infinite alternate;
+  }
+
+  .entry__body {
+    padding: 20px 22px 22px;
+  }
+
+  .entry__illo {
+    padding: 34px 20px;
+  }
+
+  .entry__name {
+    font-size: 21px;
+    letter-spacing: 0.18em;
+  }
+
+  .entry__line {
+    font-size: 13.5px;
+  }
+
+  .sections {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .section__text,
+  .section__ask {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 420px) {
+  .entrynav {
+    font-size: 8px;
+  }
+  .kbd-hint {
+    display: none;
+  }
+}
+
+/* ── The two entries that move ─────────────────────────────────────────── */
+
+/* Chrysalis: the shell opens, a butterfly climbs out, the shell closes.
+   One slow, quiet cycle. */
+[data-motion-glyph='chrysalis'] [data-shell-l],
+[data-motion-glyph='chrysalis'] [data-shell-r] {
+  transform-origin: 48px 26px;
+}
+[data-motion-glyph='chrysalis'] [data-shell-l] {
+  animation: shell-l 16s ease-in-out infinite;
+}
+[data-motion-glyph='chrysalis'] [data-shell-r] {
+  animation: shell-r 16s ease-in-out infinite;
+}
+[data-motion-glyph='chrysalis'] [data-seam] {
+  animation: seam 16s ease-in-out infinite;
+}
+[data-motion-glyph='chrysalis'] [data-butterfly] {
+  opacity: 0;
+  animation: emerge 16s ease-in-out infinite;
+}
+[data-motion-glyph='chrysalis'] [data-wing-l],
+[data-motion-glyph='chrysalis'] [data-wing-r] {
+  transform-origin: 48px 48px;
+  animation: flap 3.2s ease-in-out infinite;
+}
+
+/* Positive rotation swings the hanging end left, so the left half takes the
+   positive angle and the right half the negative one. */
+@keyframes shell-l {
+  0%, 28% { transform: rotate(0deg); }
+  44%, 84% { transform: rotate(17deg); }
+  96%, 100% { transform: rotate(0deg); }
+}
+@keyframes shell-r {
+  0%, 28% { transform: rotate(0deg); }
+  44%, 84% { transform: rotate(-17deg); }
+  96%, 100% { transform: rotate(0deg); }
+}
+@keyframes seam {
+  0%, 28% { opacity: 1; }
+  42%, 86% { opacity: 0; }
+  96%, 100% { opacity: 1; }
+}
+@keyframes emerge {
+  0%, 36% { opacity: 0; transform: translateY(6px) scale(0.7); }
+  54% { opacity: 1; transform: translateY(-4px) scale(1); }
+  78% { opacity: 1; transform: translateY(-13px) scale(1); }
+  90%, 100% { opacity: 0; transform: translateY(-22px) scale(1); }
+}
+@keyframes flap {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.66); }
+}
+
+/* Candle: the flame leans and breathes. */
+[data-motion-glyph='candle'] [data-flame] {
+  transform-origin: 48px 40px;
+  animation: flicker 3.6s ease-in-out infinite;
+}
+[data-motion-glyph='candle'] [data-halo] {
+  animation: halo 3.6s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { transform: scale(1, 1) skewX(0deg); }
+  22% { transform: scale(0.95, 1.06) skewX(-2.5deg); }
+  46% { transform: scale(1.04, 0.96) skewX(1.5deg); }
+  68% { transform: scale(0.97, 1.03) skewX(-1deg); }
+  84% { transform: scale(1.02, 0.99) skewX(2deg); }
+}
+@keyframes halo {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  40% { opacity: 1; transform: scale(1.06); }
+  70% { opacity: 0.68; transform: scale(0.97); }
+}
+[data-motion-glyph='candle'] [data-halo] {
+  transform-origin: 48px 33px;
+}
+
+/* ── Motion ────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .card:hover,
+  .card:focus-visible {
+    transform: none;
+  }
+}

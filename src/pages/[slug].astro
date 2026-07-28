@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro'
+import Glyph from '../components/Glyph.astro'
+import { metaphors, bySlug, neighbors } from '../data/metaphors.js'
+import { families } from '../data/families.js'
+import { SITE_NAME } from '../site.js'
+
+export function getStaticPaths() {
+  return metaphors.map((m) => ({ params: { slug: m.slug } }))
+}
+
+const { slug } = Astro.params
+const m = bySlug[slug]
+const family = families[m.family]
+const { prev, next } = neighbors(m.slug)
+
+// The chrysalis opens and the candle flickers. Nothing else moves.
+const animates = m.slug === 'chrysalis' || m.slug === 'candle'
+
+const allSlugs = metaphors.map((x) => x.slug).join(',')
+const related = m.related.map((r) => bySlug[r])
+---
+
+<Base
+  title={`${m.name} · ${SITE_NAME}`}
+  description={m.oneLiner}
+  accent={family.accent ?? '#d8b25e'}
+  ogType="article"
+  canonical={`/${m.slug}/`}
+  slug={m.slug}
+  prev={`/${prev.slug}/`}
+  next={`/${next.slug}/`}
+>
+  <div
+    class="shell"
+    style={`--family-field: var(--fam-${m.family}-field); --family-accent: var(--fam-${m.family}-accent);`}
+  >
+    <div class="inner inner--entry">
+      <nav class="entrynav" aria-label="Collection">
+        <div class="entrynav__side">
+          <a href="/" rel="up">&larr; All twenty</a>
+        </div>
+        <div class="entrynav__side">
+          <span class="kbd-hint" aria-hidden="true">&larr; &rarr; to browse</span>
+          <a href={`/${prev.slug}/`} rel="prev">Prev</a>
+          <a href={`/${next.slug}/`} rel="next">Next</a>
+          <button class="draw" type="button" data-draw={allSlugs}>Draw again &#8635;</button>
+        </div>
+      </nav>
+
+      <main class="entry" id="main">
+        <div class="entry__illo">
+          <span class="entry__illo-in"><Glyph glyph={m.glyph} animate={animates} /></span>
+        </div>
+
+        <div class="entry__body">
+          <p class="entry__family">{family.name}</p>
+          <h1 class="entry__name">
+            {m.name}{m.draft && <span class="draft" title="First-draft copy, awaiting revision">Draft</span>}
+          </h1>
+          <p class="entry__line">{m.oneLiner}</p>
+
+          <hr class="entry__rule" />
+
+          <div class="sections">
+            <section>
+              <h2 class="section__label">Its moment</h2>
+              <p class="section__text">{m.moment}</p>
+              <p class="section__ask">The question it asks: {m.question}</p>
+            </section>
+
+            <section>
+              <h2 class="section__label">Its mechanics</h2>
+              <p class="section__text">{m.mechanics}</p>
+            </section>
+
+            <section class="sections__wide">
+              <h2 class="section__label">Its breaking point</h2>
+              <p class="section__text">{m.breaking}</p>
+            </section>
+          </div>
+
+          <div class="entry__foot">
+            <ul class="related">
+              <li class="related__label">Related</li>
+              {
+                related.map((r) => (
+                  <li>
+                    <a class="chip" href={`/${r.slug}/`}>
+                      {r.name}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .inner--entry {
+    max-width: 940px;
+  }
+
+  .shell {
+    align-items: flex-start;
+    padding-top: 42px;
+    padding-bottom: 42px;
+  }
+
+  .sections__wide {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 900px) {
+    .shell {
+      padding-top: 26px;
+    }
+  }
+</style>
