@@ -4,8 +4,8 @@ import { buildGlyphs } from '../data/glyphs.js'
 interface Props {
   /** The metaphor's slug; glyphs are keyed by it. */
   slug: string
-  /** Opts an entry into the two motions the brief allows: the chrysalis
-      opening and the candle's flicker. */
+  /** Gives the glyph its motion. Off for the social images, which are opened
+      outside the page and have no stylesheet to move them. */
   animate?: boolean
   class?: string
 }
@@ -17,7 +17,8 @@ const glyphs = buildGlyphs(
 )
 
 const inner = glyphs[slug] ?? glyphs['north-star']
-const motion = animate && (slug === 'chrysalis' || slug === 'candle') ? slug : undefined
+// The stylesheet keys each glyph's motion off its slug.
+const motion = animate ? slug : undefined
 ---
 
 <svg
