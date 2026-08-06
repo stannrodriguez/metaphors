@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro'
 import Card from '../components/Card.astro'
 import { metaphors } from '../data/metaphors.js'
+import { families, familyOrder } from '../data/families.js'
 import { SITE_NAME, SITE_TAGLINE, INTRO } from '../site.js'
 import { home } from '../href.js'
 
@@ -14,6 +15,9 @@ const right = [metaphors[9], metaphors[11]]
 const ringBottom = metaphors.slice(12, 20)
 
 const allSlugs = metaphors.map((m) => m.slug).join(',')
+const familyStarts = Object.fromEntries(
+  familyOrder.map((id) => [id, metaphors.find((m) => m.family === id)]),
+)
 ---
 
 <Base title={SITE_NAME} description={SITE_TAGLINE} canonical={home()} ogSlug="home">
@@ -30,6 +34,15 @@ const allSlugs = metaphors.map((m) => m.slug).join(',')
           <p class="intro__body">{INTRO}</p>
           <hr class="rule" />
           <button class="draw" type="button" data-draw={allSlugs}>Draw a card &rarr;</button>
+          <nav class="families" aria-label="Browse by family">
+            {
+              familyOrder.map((id) => (
+                <a class="family-link" href={`#metaphor-${familyStarts[id].slug}`}>
+                  {families[id].name}
+                </a>
+              ))
+            }
+          </nav>
         </section>
 
         <Card metaphor={right[0]} />
