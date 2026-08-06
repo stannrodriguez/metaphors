@@ -425,6 +425,54 @@ a:hover {
 
 /* ── The simpler grid ──────────────────────────────────────────────────── */
 
+/* A wide but short window used to preserve the ring by shrinking its copy as
+   far as 6px. Once height becomes the limiting dimension, trade the one-screen
+   composition for a readable five-column grid and let the page scroll. */
+@media (min-width: 860px) and (max-height: 820px) {
+  .shell {
+    --shell-pad-y: 26px;
+    padding-top: var(--shell-pad-y);
+    padding-bottom: var(--shell-pad-y);
+    align-items: flex-start;
+  }
+
+  .ring {
+    --cols: 5;
+    grid-template-columns: repeat(var(--cols), minmax(150px, 190px));
+    grid-template-rows: auto;
+    gap: 14px;
+  }
+
+  .intro {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding: 0 0 18px;
+  }
+
+  .intro__stars {
+    font-size: 11px;
+  }
+
+  .intro__title {
+    margin-top: 14px;
+    font-size: 23px;
+  }
+
+  .intro__body {
+    margin-top: 15px;
+    font-size: 13.5px;
+  }
+
+  .rule {
+    margin-top: 18px;
+  }
+
+  .draw {
+    margin-top: 13px;
+    font-size: 10px;
+  }
+}
+
 /* Past the cutoff the ring gives up its shape: the intro moves to the top and
    the twenty cards run as a plain grid, shedding a column at a time as the
    window narrows. This is the one place the page scrolls. It has to — the ring
