@@ -1,5 +1,5 @@
 import { metaphors } from '../data/metaphors.js'
-import { entry, home } from '../href.js'
+import { about, entry, home } from '../href.js'
 
 const escapeXml = (value) =>
   String(value)
@@ -10,7 +10,7 @@ const escapeXml = (value) =>
     .replace(/'/g, '&apos;')
 
 export function GET({ site }) {
-  const paths = [home(), ...metaphors.map((metaphor) => entry(metaphor.slug))]
+  const paths = [home(), about(), ...metaphors.map((metaphor) => entry(metaphor.slug))]
   const urls = paths
     .map((path) => `  <url><loc>${escapeXml(new URL(path, site))}</loc></url>`)
     .join('\n')
