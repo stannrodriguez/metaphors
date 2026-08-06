@@ -24,7 +24,7 @@ draw and the arrow keys, together well under 1 KB.
 | Internal link helpers | `src/href.js` |
 | Colors, type, geometry | `src/styles/tokens.css` |
 | Layout and components | `src/styles/global.css` |
-| Social images | `src/pages/og/[slug].svg.js` |
+| Social images | `src/pages/og/[slug].svg.js` and `src/pages/og/[slug].png.js` |
 
 ### Renaming the site
 
