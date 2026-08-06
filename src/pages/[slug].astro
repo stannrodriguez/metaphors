@@ -50,9 +50,7 @@ const related = m.related.map((r) => bySlug[r])
 
         <div class="entry__body">
           <p class="entry__family">{family.name}</p>
-          <h1 class="entry__name">
-            {m.name}{m.draft && <span class="draft" title="First-draft copy, awaiting revision">Draft</span>}
-          </h1>
+          <h1 class="entry__name">{m.name}</h1>
           <p class="entry__line">{m.oneLiner}</p>
 
           <hr class="entry__rule" />

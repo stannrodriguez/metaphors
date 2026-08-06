@@ -42,12 +42,6 @@ Glyphs are keyed by slug, so adding an entry means adding one object to
 `src/data/metaphors.js` and one entry to `src/data/glyphs.js` under the same
 key. There is no separate glyph field to keep in step.
 
-### Marking copy as final
-
-Nineteen entries carry `draft: true` in `src/data/metaphors.js`, which prints a
-small "draft" marker beside the name. Flip it to `false` as each is revised.
-Flywheel is already final and carries the finished copy verbatim.
-
 ## Behavior
 
 - **The draw** picks at random and will not repeat a card until all twenty have

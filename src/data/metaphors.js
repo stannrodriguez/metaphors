@@ -3,16 +3,12 @@
 //
 // Each entry keys its glyph by slug; see data/glyphs.js.
 //
-// `draft: true` marks copy written as a first draft and awaiting revision.
-// Flywheel carries finished copy and is the only entry without the marker.
-
 export const metaphors = [
   {
     slug: 'north-star',
     name: 'North star',
     oneLiner: "Steer by it, don't sail to it.",
     family: 'direction-and-time',
-    draft: true,
     moment: 'A choice splits the road and both branches look defensible.',
     question: 'which direction does this serve, regardless of where it lands?',
     mechanics:
@@ -26,7 +22,6 @@ export const metaphors = [
     name: 'Helm',
     oneLiner: 'Hold the wheel, not the road.',
     family: 'direction-and-time',
-    draft: true,
     moment: 'Conditions turn against the plan, and the plan was sound.',
     question: 'what does this hand still turn?',
     mechanics:
@@ -40,7 +35,6 @@ export const metaphors = [
     name: 'Map',
     oneLiner: 'Not the territory.',
     family: 'direction-and-time',
-    draft: true,
     moment: 'A model of the situation starts standing in for the situation.',
     question: 'what did this leave out to stay legible?',
     mechanics:
@@ -54,7 +48,6 @@ export const metaphors = [
     name: 'River',
     oneLiner: 'The same river, never the same water.',
     family: 'direction-and-time',
-    draft: true,
     moment: 'Something keeps its name while everything inside it turns over.',
     question: 'am I swimming, or being carried?',
     mechanics:
@@ -68,7 +61,6 @@ export const metaphors = [
     name: 'Flywheel',
     oneLiner: 'Effort stored as momentum.',
     family: 'momentum-and-capacity',
-    draft: false,
     moment: 'Effort feels pointless because progress is invisible.',
     question:
       "is this push adding momentum to a wheel that's already turning, or starting a new wheel from rest?",
@@ -83,7 +75,6 @@ export const metaphors = [
     name: 'Battery',
     oneLiner: 'Drains fast, charges slow.',
     family: 'momentum-and-capacity',
-    draft: true,
     moment: 'The work remains and the capacity for it does not.',
     question: 'is there charge for this?',
     mechanics:
@@ -97,7 +88,6 @@ export const metaphors = [
     name: 'Whetstone',
     oneLiner: 'An edge kept by friction.',
     family: 'momentum-and-capacity',
-    draft: true,
     moment: 'Practice runs smooth and the edge dulls anyway.',
     question: 'what abrades here?',
     mechanics:
@@ -111,7 +101,6 @@ export const metaphors = [
     name: 'Ratchet',
     oneLiner: "Progress that can't slip back.",
     family: 'momentum-and-capacity',
-    draft: true,
     moment: 'The same ground gets retaken every quarter.',
     question: 'what would hold this without attention?',
     mechanics:
@@ -125,7 +114,6 @@ export const metaphors = [
     name: 'Trellis',
     oneLiner: 'Growth needs something to climb.',
     family: 'growth',
-    draft: true,
     moment: 'Effort spreads across the ground and gains no height.',
     question: 'what is this climbing?',
     mechanics:
@@ -139,7 +127,6 @@ export const metaphors = [
     name: 'Chrysalis',
     oneLiner: 'Shelter is a stage, not a home.',
     family: 'growth',
-    draft: true,
     moment: 'The old way stops working and the new way has not arrived.',
     question: 'how long does this stage run?',
     mechanics:
@@ -153,7 +140,6 @@ export const metaphors = [
     name: 'Candle',
     oneLiner: 'Hope, lit on purpose.',
     family: 'growth',
-    draft: true,
     moment: 'Dark arrives, and the room stays dark by default.',
     question: 'what gets lit here, and by whom?',
     mechanics:
@@ -167,7 +153,6 @@ export const metaphors = [
     name: 'Magnet',
     oneLiner: 'It pulls, and it pushes.',
     family: 'play-and-terrain',
-    draft: true,
     moment: 'Behavior repeats across people who share nothing but the place.',
     question: 'what field are they standing in?',
     mechanics:
@@ -181,7 +166,6 @@ export const metaphors = [
     name: 'The game',
     oneLiner: 'Better move, or different board?',
     family: 'play-and-terrain',
-    draft: true,
     moment: 'The moves keep improving and the position keeps losing.',
     question: 'better move, or different board?',
     mechanics:
@@ -195,7 +179,6 @@ export const metaphors = [
     name: 'Portal',
     oneLiner: 'The shortcut might exist.',
     family: 'play-and-terrain',
-    draft: true,
     moment: 'The long road stretches ahead, and nobody checked the wall for a door.',
     question: 'has anyone tried the easy thing?',
     mechanics:
@@ -209,7 +192,6 @@ export const metaphors = [
     name: 'Deck',
     oneLiner: 'Every addition dilutes the draw.',
     family: 'play-and-terrain',
-    draft: true,
     moment: 'A good option appears, and the list already runs long.',
     question: 'what does adding this do to everything already in?',
     mechanics:
@@ -223,7 +205,6 @@ export const metaphors = [
     name: 'Door',
     oneLiner: 'Can you walk back through?',
     family: 'play-and-terrain',
-    draft: true,
     moment: 'A decision stalls in analysis, and the analysis stopped adding information.',
     question: 'can you walk back through?',
     mechanics:
@@ -237,7 +218,6 @@ export const metaphors = [
     name: 'Vortex',
     oneLiner: 'The pull grows toward the center.',
     family: 'inner-weather',
-    draft: true,
     moment: 'The same thought or the same fight circles back tighter each time.',
     question: 'which direction leaves the column?',
     mechanics:
@@ -251,7 +231,6 @@ export const metaphors = [
     name: 'Abyss',
     oneLiner: "Look into the unknown.",
     family: 'inner-weather',
-    draft: true,
     moment: 'Something waits unexamined, and the not-looking costs more each week.',
     question: 'what does the dark actually hold?',
     mechanics:
@@ -265,7 +244,6 @@ export const metaphors = [
     name: 'Spotlight',
     oneLiner: "The dark isn't empty.",
     family: 'inner-weather',
-    draft: true,
     moment: 'One item fills the whole field of view.',
     question: 'who aimed this, and what fell outside the beam?',
     mechanics:
@@ -279,7 +257,6 @@ export const metaphors = [
     name: 'Mask',
     oneLiner: 'It faces the world for you.',
     family: 'inner-weather',
-    draft: true,
     moment: 'The face presented at work stops matching the one underneath.',
     question: 'what does this mask protect, and can it come off?',
     mechanics:
