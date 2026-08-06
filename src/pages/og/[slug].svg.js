@@ -38,8 +38,8 @@ function card({ label, name, line, glyphKey }) {
   const lines = wrap(line, 42)
 
   // The name is a variable, so size it to the space rather than assuming.
-  const nameSize = name.length > 20 ? 40 : name.length > 12 ? 50 : 62
-  const nameTrack = name.length > 20 ? 5 : name.length > 12 ? 7 : 9
+  const nameSize = name.length > 22 ? 32 : name.length > 16 ? 40 : name.length > 12 ? 50 : 62
+  const nameTrack = name.length > 22 ? 4 : name.length > 16 ? 5 : name.length > 12 ? 7 : 9
   const ruleY = 356 + lines.length * 44 + 8
   const footY = ruleY + 56
 
