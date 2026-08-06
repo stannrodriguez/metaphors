@@ -616,10 +616,10 @@ a:hover {
 /* The design auto-animates the glyphs where there is no hover to spend them on.
    Held to the simple grid, so the ring keeps its stillness until then. */
 @media (max-width: 859px) {
-  .card [data-motion-glyph] {
+  .card[data-in-view='true'] [data-motion-glyph] {
     --play: running;
   }
-  .card__glyph-in {
+  .card[data-in-view='true'] .card__glyph-in {
     animation: glowpulse 2.8s ease-in-out infinite alternate;
   }
 }

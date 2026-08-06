@@ -119,6 +119,27 @@ const sitemapURL = new URL(asset('sitemap.xml'), Astro.site)
         })
       })
 
+      // ── Mobile card motion ─────────────────────────────────────────
+      // Narrow layouts have no hover state to trigger a glyph. Run only the
+      // cards near the viewport instead of keeping all twenty animations live.
+      const cards = document.querySelectorAll<HTMLElement>('.card')
+      if (cards.length > 0) {
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                const card = entry.target as HTMLElement
+                card.dataset.inView = String(entry.isIntersecting)
+              })
+            },
+            { rootMargin: '10% 0px', threshold: 0.15 },
+          )
+          cards.forEach((card) => observer.observe(card))
+        } else {
+          cards.forEach((card) => (card.dataset.inView = 'true'))
+        }
+      }
+
       // ── Arrow keys move through the collection ────────────────────────
       const prev = document.body.dataset.prev
       const next = document.body.dataset.next
