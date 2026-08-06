@@ -370,6 +370,21 @@ a:hover {
   text-wrap: pretty;
 }
 
+.sections__practice {
+  grid-column: 1 / -1;
+  border: 1px solid var(--rule-hair);
+  border-radius: 8px;
+  background: rgba(201, 162, 75, 0.045);
+  padding: 16px 18px;
+}
+
+.practice__text {
+  margin: 6px 0 0;
+  font: 400 15px/1.65 var(--serif);
+  color: var(--text-full);
+  text-wrap: pretty;
+}
+
 .entry__foot {
   margin-top: 22px;
   padding-top: 18px;
