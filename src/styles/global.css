@@ -263,6 +263,18 @@ a:hover {
   color: var(--gold-lit);
 }
 
+.intro__about {
+  margin: 8px 0 0;
+  font: italic 400 clamp(9px, calc(var(--card-w) * 0.06), 11px) / 1.4 var(--serif);
+}
+
+.intro__about a {
+  color: var(--text-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-chip);
+  text-underline-offset: 3px;
+}
+
 .card:target {
   box-shadow: 0 0 0 2px var(--gold-lit), var(--lift-shadow);
 }

@@ -6,6 +6,9 @@ const BASE = import.meta.env.BASE_URL.replace(/\/*$/, '/')
 /** The collection index. */
 export const home = () => BASE
 
+/** The collection's intent, influences, and authorship. */
+export const about = () => `${BASE}about/`
+
 /** An entry page. */
 export const entry = (slug) => `${BASE}${slug}/`
 
