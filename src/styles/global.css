@@ -276,7 +276,7 @@ a:hover {
 }
 
 .entry__family {
-  font: 500 8.5px var(--mono);
+  font: 500 10.5px/1.4 var(--mono);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-label);
@@ -291,7 +291,7 @@ a:hover {
 }
 
 .entry__line {
-  font: italic 400 14.5px/1.45 var(--serif);
+  font: italic 400 16px/1.5 var(--serif);
   color: var(--text-soft);
   margin-top: 6px;
 }
@@ -311,7 +311,7 @@ a:hover {
 }
 
 .section__label {
-  font: 500 8.5px var(--mono);
+  font: 500 10.5px/1.4 var(--mono);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-label);
@@ -320,14 +320,14 @@ a:hover {
 
 .section__text {
   margin: 5px 0 0;
-  font: 400 12.5px/1.6 var(--serif);
+  font: 400 15px/1.65 var(--serif);
   color: var(--text-body);
   text-wrap: pretty;
 }
 
 .section__ask {
   margin: 7px 0 0;
-  font: italic 400 12.5px/1.6 var(--serif);
+  font: italic 400 15px/1.65 var(--serif);
   color: var(--text-soft);
   text-wrap: pretty;
 }
@@ -354,18 +354,20 @@ a:hover {
 }
 
 .related__label {
-  font: 500 8px var(--mono);
+  font: 500 10px/1.4 var(--mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-faint);
 }
 
 .chip {
-  display: inline-block;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
   border: 1px solid var(--rule-chip);
   border-radius: 999px;
-  padding: 4px 12px;
-  font: italic 400 11px var(--serif);
+  padding: 8px 14px;
+  font: italic 400 13px/1.2 var(--serif);
   color: var(--gold);
   transition: border-color 0.25s, color 0.25s;
 }
@@ -383,15 +385,18 @@ a:hover {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  font: 500 9px var(--mono);
+  font: 500 10.5px var(--mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
 .entrynav a,
 .entrynav .draw {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   color: var(--gold);
-  font: 500 9px var(--mono);
+  font: 500 10.5px var(--mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   margin: 0;
@@ -566,12 +571,12 @@ a:hover {
   }
 
   .entry__name {
-    font-size: 21px;
+    font-size: 24px;
     letter-spacing: 0.18em;
   }
 
   .entry__line {
-    font-size: 13.5px;
+    font-size: 16px;
   }
 
   .sections {
@@ -581,14 +586,11 @@ a:hover {
 
   .section__text,
   .section__ask {
-    font-size: 13px;
+    font-size: 15px;
   }
 }
 
 @media (max-width: 420px) {
-  .entrynav {
-    font-size: 8px;
-  }
   .kbd-hint {
     display: none;
   }
