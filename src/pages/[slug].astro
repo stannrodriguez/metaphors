@@ -1,8 +1,7 @@
 ---
 import Base from '../layouts/Base.astro'
-import Glyph from '../components/Glyph.astro'
+import EntryArticle from '../components/EntryArticle.astro'
 import { metaphors, bySlug, neighbors } from '../data/metaphors.js'
-import { families } from '../data/families.js'
 import { SITE_NAME } from '../site.js'
 import { entry, home } from '../href.js'
 
@@ -12,11 +11,9 @@ export function getStaticPaths() {
 
 const { slug } = Astro.params
 const m = bySlug[slug]
-const family = families[m.family]
 const { prev, next } = neighbors(m.slug)
 
 const allSlugs = metaphors.map((x) => x.slug).join(',')
-const related = m.related.map((r) => bySlug[r])
 ---
 
 <Base
@@ -44,55 +41,7 @@ const related = m.related.map((r) => bySlug[r])
       </nav>
 
       <main class="entry" id="main">
-        <div class="entry__illo">
-          <span class="entry__illo-in"><Glyph slug={m.slug} animate /></span>
-        </div>
-
-        <div class="entry__body">
-          <p class="entry__family">{family.name}</p>
-          <h1 class="entry__name">{m.name}</h1>
-          <p class="entry__line">{m.oneLiner}</p>
-
-          <hr class="entry__rule" />
-
-          <div class="sections">
-            <section>
-              <h2 class="section__label">Its moment</h2>
-              <p class="section__text">{m.moment}</p>
-              <p class="section__ask">The question it asks: {m.question}</p>
-            </section>
-
-            <section>
-              <h2 class="section__label">Its mechanics</h2>
-              <p class="section__text">{m.mechanics}</p>
-            </section>
-
-            <section class="sections__wide">
-              <h2 class="section__label">Its breaking point</h2>
-              <p class="section__text">{m.breaking}</p>
-            </section>
-
-            <section class="sections__practice">
-              <h2 class="section__label">Try it now</h2>
-              <p class="practice__text">{m.practice}</p>
-            </section>
-          </div>
-
-          <div class="entry__foot">
-            <ul class="related">
-              <li class="related__label">Related</li>
-              {
-                related.map((r) => (
-                  <li>
-                    <a class="chip" href={entry(r.slug)}>
-                      {r.name}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-        </div>
+        <EntryArticle slug={m.slug} level={1} />
       </main>
     </div>
   </div>
@@ -107,10 +56,6 @@ const related = m.related.map((r) => bySlug[r])
     align-items: flex-start;
     padding-top: 42px;
     padding-bottom: 42px;
-  }
-
-  .sections__wide {
-    grid-column: 1 / -1;
   }
 
   @media (max-width: 900px) {

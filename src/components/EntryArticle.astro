@@ -1,0 +1,72 @@
+---
+import Glyph from './Glyph.astro'
+import { bySlug } from '../data/metaphors.js'
+import { families } from '../data/families.js'
+import { entry } from '../href.js'
+
+interface Props {
+  /** The metaphor to render. */
+  slug: string
+  /** Heading level for the name; the entry page owns its h1, the sheet sits
+      inside a page that already has one. */
+  level?: 1 | 2
+}
+const { slug, level = 1 } = Astro.props
+
+const m = bySlug[slug]
+const family = families[m.family]
+const related = m.related.map((r) => bySlug[r])
+
+const Name = level === 1 ? 'h1' : 'h2'
+const Label = level === 1 ? 'h2' : 'h3'
+---
+
+<div class="entry__illo">
+  <span class="entry__illo-in"><Glyph slug={m.slug} animate /></span>
+</div>
+
+<div class="entry__body">
+  <p class="entry__family">{family.name}</p>
+  <Name class="entry__name">{m.name}</Name>
+  <p class="entry__line">{m.oneLiner}</p>
+
+  <hr class="entry__rule" />
+
+  <div class="sections">
+    <section>
+      <Label class="section__label">Its moment</Label>
+      <p class="section__text">{m.moment}</p>
+      <p class="section__ask">The question it asks: {m.question}</p>
+    </section>
+
+    <section>
+      <Label class="section__label">Its mechanics</Label>
+      <p class="section__text">{m.mechanics}</p>
+    </section>
+
+    <section class="sections__wide">
+      <Label class="section__label">Its breaking point</Label>
+      <p class="section__text">{m.breaking}</p>
+    </section>
+
+    <section class="sections__practice">
+      <Label class="section__label">Try it now</Label>
+      <p class="practice__text">{m.practice}</p>
+    </section>
+  </div>
+
+  <div class="entry__foot">
+    <ul class="related">
+      <li class="related__label">Related</li>
+      {
+        related.map((r) => (
+          <li>
+            <a class="chip" href={entry(r.slug)}>
+              {r.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

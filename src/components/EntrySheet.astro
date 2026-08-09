@@ -1,0 +1,166 @@
+---
+import EntryArticle from './EntryArticle.astro'
+import { metaphors, neighbors } from '../data/metaphors.js'
+
+// The side sheet. Clicking a card on the index opens its entry here instead of
+// leaving the page, so closing it — or moving to another word — costs one
+// gesture rather than a round trip. Every entry ships as an inert <template>;
+// the script clones the chosen one into the sheet. The cards keep their real
+// hrefs, so middle-click, cmd-click, crawlers, and no-JS visitors still get
+// the full entry pages.
+---
+
+<dialog class="sheet" aria-label="Metaphor entry">
+  <div class="sheet__frame">
+    <header class="sheet__bar">
+      <div class="sheet__side">
+        <button class="sheet__nav" type="button" data-sheet-prev>&larr; Prev</button>
+        <button class="sheet__nav" type="button" data-sheet-next>Next &rarr;</button>
+      </div>
+      <div class="sheet__side">
+        <a class="sheet__permalink" data-sheet-permalink href="#">Full page</a>
+        <button class="sheet__close" type="button" data-sheet-close>
+          Close <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </header>
+    <div class="sheet__scroll" data-sheet-body></div>
+  </div>
+</dialog>
+
+{
+  metaphors.map((m) => {
+    const { prev, next } = neighbors(m.slug)
+    return (
+      <template
+        data-sheet-entry={m.slug}
+        data-name={m.name}
+        data-prev={prev.slug}
+        data-next={next.slug}
+      >
+        <article class="sheet__entry">
+          <EntryArticle slug={m.slug} level={2} />
+        </article>
+      </template>
+    )
+  })
+}
+
+<script>
+  import { entry, home } from '../href.js'
+  import { SITE_NAME } from '../site.js'
+
+  const sheet = document.querySelector<HTMLDialogElement>('.sheet')
+
+  if (sheet) {
+    const body = sheet.querySelector<HTMLElement>('[data-sheet-body]')!
+    const prevBtn = sheet.querySelector<HTMLButtonElement>('[data-sheet-prev]')!
+    const nextBtn = sheet.querySelector<HTMLButtonElement>('[data-sheet-next]')!
+    const closeBtn = sheet.querySelector<HTMLButtonElement>('[data-sheet-close]')!
+    const permalink = sheet.querySelector<HTMLAnchorElement>('[data-sheet-permalink]')!
+
+    const templates = new Map<string, HTMLTemplateElement>()
+    document
+      .querySelectorAll<HTMLTemplateElement>('template[data-sheet-entry]')
+      .forEach((t) => templates.set(t.dataset.sheetEntry!, t))
+
+    const baseTitle = document.title
+    // Where focus goes back to when the sheet closes.
+    let opener: HTMLElement | null = null
+
+    // An entry href is `${base}${slug}/`; anything else is left alone.
+    const escapedBase = home().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const entryPattern = new RegExp(`^${escapedBase}([a-z0-9-]+)/?$`)
+    const slugFromHref = (href: string | null) => href?.match(entryPattern)?.[1] ?? null
+
+    function render(slug: string) {
+      const tpl = templates.get(slug)!
+      body.replaceChildren(tpl.content.cloneNode(true))
+      body.scrollTop = 0
+      prevBtn.dataset.slug = tpl.dataset.prev
+      nextBtn.dataset.slug = tpl.dataset.next
+      permalink.href = entry(slug)
+      document.title = `${tpl.dataset.name} · ${SITE_NAME}`
+    }
+
+    function show(slug: string, push: boolean) {
+      if (!templates.has(slug)) return false
+      const wasOpen = sheet!.open
+      render(slug)
+      if (!wasOpen) sheet!.showModal()
+      if (push) {
+        // One history entry per visit to the sheet: opening pushes, browsing
+        // inside it replaces. Back closes the sheet; reload lands on the real
+        // entry page.
+        const state = { sheet: slug }
+        if (wasOpen) history.replaceState(state, '', entry(slug))
+        else history.pushState(state, '', entry(slug))
+      }
+      return true
+    }
+
+    function hide() {
+      if (sheet!.open) sheet!.close()
+      document.title = baseTitle
+      opener?.focus()
+      opener = null
+    }
+
+    // A close the user asked for; the history entry has to go with it.
+    function requestClose() {
+      if (history.state?.sheet) history.back()
+      else hide()
+    }
+
+    window.addEventListener('popstate', (event) => {
+      const slug = event.state?.sheet
+      if (typeof slug === 'string') show(slug, false)
+      else hide()
+    })
+
+    // Any entry link — a card, a related chip inside the sheet — opens here
+    // instead of navigating. Modified clicks keep their browser meaning.
+    document.addEventListener('click', (event) => {
+      if (event.defaultPrevented || event.button !== 0) return
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+      const link = (event.target as Element).closest?.('a')
+      if (!link) return
+      const slug = slugFromHref(link.getAttribute('href'))
+      if (!slug || !templates.has(slug)) return
+      event.preventDefault()
+      if (!sheet!.open) opener = link
+      show(slug, true)
+    })
+
+    prevBtn.addEventListener('click', () => show(prevBtn.dataset.slug!, true))
+    nextBtn.addEventListener('click', () => show(nextBtn.dataset.slug!, true))
+    closeBtn.addEventListener('click', requestClose)
+
+    // Esc reaches the dialog as a cancel; route it through the same close.
+    sheet.addEventListener('cancel', (event) => {
+      event.preventDefault()
+      requestClose()
+    })
+
+    // A click on the dimmed page, outside the frame, closes too.
+    sheet.addEventListener('click', (event) => {
+      if (!(event.target as Element).closest('.sheet__frame')) requestClose()
+    })
+
+    window.addEventListener('keydown', (event) => {
+      if (!sheet!.open) return
+      if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault()
+        show(prevBtn.dataset.slug!, true)
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault()
+        show(nextBtn.dataset.slug!, true)
+      }
+    })
+
+    // The draw button asks the sheet first and only navigates if it declines.
+    ;(window as any).mwlbOpenEntry = (slug: string) => show(slug, true)
+    ;(window as any).mwlbCurrentEntry = () => (sheet!.open ? history.state?.sheet ?? null : null)
+  }
+</script>
