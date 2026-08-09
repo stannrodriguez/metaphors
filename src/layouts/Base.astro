@@ -114,8 +114,13 @@ const sitemapURL = new URL(asset('sitemap.xml'), Astro.site)
           const all = (el.dataset.draw || '').split(',').filter(Boolean)
           if (all.length === 0) return
           event.preventDefault()
-          const current = document.body.dataset.slug || null
-          window.location.href = `${BASE}${pick(all, current)}/`
+          // On the index the sheet supplies the current card and takes the
+          // drawn one; entry pages read their own slug and navigate.
+          const current =
+            document.body.dataset.slug || (window as any).mwlbCurrentEntry?.() || null
+          const choice = pick(all, current)
+          if ((window as any).mwlbOpenEntry?.(choice)) return
+          window.location.href = `${BASE}${choice}/`
         })
       })
 

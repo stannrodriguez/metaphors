@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro'
 import Card from '../components/Card.astro'
+import EntrySheet from '../components/EntrySheet.astro'
 import { metaphors } from '../data/metaphors.js'
 import { SITE_NAME, SITE_TAGLINE, INTRO } from '../site.js'
 import { about, home } from '../href.js'
@@ -41,4 +42,6 @@ const allSlugs = metaphors.map((m) => m.slug).join(',')
       </div>
     </div>
   </main>
+
+  <EntrySheet />
 </Base>
