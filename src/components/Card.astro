@@ -12,7 +12,7 @@ interface Props {
 const { metaphor } = Astro.props
 ---
 
-<a class="card" href={entry(metaphor.slug)}>
+<a class="card" href={entry(metaphor.slug)} aria-label={`${metaphor.name}: ${metaphor.oneLiner}`}>
   <span class="card__face">
     <span class="card__glyph">
       <span class="card__glyph-in"><Glyph slug={metaphor.slug} animate /></span>

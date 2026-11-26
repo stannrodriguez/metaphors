@@ -6,15 +6,15 @@ import { SITE_NAME } from '../site.js'
 
 <Base
   title={`About · ${SITE_NAME}`}
-  description="The intent, method, influences, and authorship behind Metaphors Worth Living By."
+  description="How to use this collection of twenty metaphors, its debt to Lakoff and Johnson, and who built it."
   canonical={about()}
   ogSlug="home"
 >
   <div class="shell shell--about">
     <div class="inner inner--about">
-      <nav class="entrynav" aria-label="Collection">
+      <nav class="entrynav" aria-label="Collection navigation">
         <div class="entrynav__side">
-          <a href={home()} rel="up">&larr; All twenty</a>
+          <a href={home()} rel="up" aria-label="Back to all twenty metaphors">&larr; All cards</a>
         </div>
       </nav>
 
@@ -41,8 +41,8 @@ import { SITE_NAME } from '../site.js'
         <section>
           <h2>How to use the collection</h2>
           <p>
-            Draw a card when a situation feels stuck, browse by family when you can name the
-            kind of problem, or move through all twenty in order. Keep the mechanics and the
+            Draw a card when a situation feels stuck, pick a card when you can name the
+            kind of problem, or move through all twenty in order with the arrow keys. Keep the mechanics and the
             breaking point together: a metaphor becomes dangerous when its limits disappear.
           </p>
         </section>

@@ -18,7 +18,7 @@ const allSlugs = metaphors.map((x) => x.slug).join(',')
 
 <Base
   title={`${m.name} · ${SITE_NAME}`}
-  description={m.oneLiner}
+  description={`${m.oneLiner} ${m.moment}`}
   ogType="article"
   canonical={entry(m.slug)}
   ogSlug={m.slug}
@@ -28,15 +28,15 @@ const allSlugs = metaphors.map((x) => x.slug).join(',')
 >
   <div class="shell">
     <div class="inner inner--entry">
-      <nav class="entrynav" aria-label="Collection">
+      <nav class="entrynav" aria-label="Entry navigation">
         <div class="entrynav__side">
-          <a href={home()} rel="up">&larr; All twenty</a>
+          <a href={home()} rel="up" aria-label="Back to all twenty metaphors">&larr; All cards</a>
         </div>
         <div class="entrynav__side">
           <span class="kbd-hint" aria-hidden="true">&larr; &rarr; to browse</span>
-          <a href={entry(prev.slug)} rel="prev">Prev</a>
-          <a href={entry(next.slug)} rel="next">Next</a>
-          <button class="draw" type="button" data-draw={allSlugs}>Draw again &#8635;</button>
+          <a href={entry(prev.slug)} rel="prev" title={`Previous: ${prev.name}`} aria-label={`Previous metaphor: ${prev.name}`}>Prev</a>
+          <a href={entry(next.slug)} rel="next" title={`Next: ${next.name}`} aria-label={`Next metaphor: ${next.name}`}>Next</a>
+          <button class="draw" type="button" data-draw={allSlugs} aria-label="Draw a random card">Draw a card &#8635;</button>
         </div>
       </nav>
 

@@ -1,7 +1,8 @@
 # Metaphors Worth Living By
 
-A static collection of twenty metaphors. Each is a card on the home page and a
-page of its own: its moment, its mechanics, its breaking point.
+A static collection of twenty metaphors. Each appears as a card on the home page
+(opening in a side sheet) and has a standalone page of its own: its moment, its
+mechanics, its breaking point, and a practice to try.
 
 ```
 npm install
@@ -10,8 +11,9 @@ npm run build    # static output in dist/
 npm run preview  # serve the build
 ```
 
-Astro, no client framework. The only JavaScript shipped to the browser is the
-draw and the arrow keys, together well under 1 KB.
+Built with Astro and no client framework. Small inline scripts handle the random
+card draw, the home-page side sheet, keyboard navigation, and viewport-based
+card motion on narrow screens.
 
 ## Where things live
 
@@ -45,12 +47,16 @@ key. There is no separate glyph field to keep in step.
 ## Behavior
 
 - **The draw** picks at random and will not repeat a card until all twenty have
-  come up, tracked in `localStorage` under `mwlb:drawn`. It degrades to a plain
-  link with JavaScript off.
-- **Arrow keys** move left and right through the collection on entry pages, and
-  wrap at both ends. Escape returns to the collection.
-- **Motion** is limited to the design's hover states, plus the chrysalis opening
-  and the candle's flicker. All of it stops under `prefers-reduced-motion`.
+  come up, tracked in `localStorage` under `mwlb:drawn`.
+- **The side sheet** opens cards in place on the home page using a native
+  `<dialog>` element and updates the URL with the History API. Cards remain real
+  links for modified clicks and visitors with JavaScript off.
+- **Keyboard navigation** uses left and right arrow keys to move through the
+  collection (wrapping at both ends) on entry pages and in the side sheet.
+  Escape closes the sheet or returns to the collection.
+- **Motion** includes card hover lift and per-glyph animations on hover/focus,
+  on entry pages, and while cards are in view on narrow screens. All of it stops
+  under `prefers-reduced-motion`.
 
 ## Where the design and the brief disagreed
 
@@ -72,7 +78,7 @@ Six places needed a call. All six are settled.
 4. **Flywheel copy.** The design file carries older Flywheel text. Used the
    brief's finished copy, verbatim.
 5. **The draw slot.** The brief puts it in the final grid cell; the design puts
-   "Draw a card →" inside the centre intro panel, and the twenty cards fill the
+   "Draw a card →" inside the center intro panel, and the twenty cards fill the
    ring exactly with no spare cell. Confirmed: it lives in the intro panel.
 6. **Family color.** The brief asks for cards grouped by family color and a
    family-color illustration background; the design is a single gold-on-dark
@@ -101,7 +107,7 @@ links and all forty related chips resolve. Laid out at 380px and 1440px.
 ## Deploying to GitHub Pages
 
 `.github/workflows/deploy.yml` builds the site and publishes it. It runs on
-every push to `main` (and to the current working branch), or on demand from the
+pushes to `main` (and any branch listed in the workflow), or on demand from the
 Actions tab.
 
 One setting has to be turned on by hand, once:
