@@ -14,11 +14,11 @@ import { metaphors, neighbors } from '../data/metaphors.js'
   <div class="sheet__frame">
     <header class="sheet__bar">
       <div class="sheet__side">
-        <button class="sheet__nav" type="button" data-sheet-prev>&larr; Prev</button>
-        <button class="sheet__nav" type="button" data-sheet-next>Next &rarr;</button>
+        <button class="sheet__nav" type="button" data-sheet-prev aria-label="Previous metaphor">&larr; Prev</button>
+        <button class="sheet__nav" type="button" data-sheet-next aria-label="Next metaphor">Next &rarr;</button>
       </div>
       <div class="sheet__side">
-        <a class="sheet__permalink" data-sheet-permalink href="#">Full page</a>
+        <a class="sheet__permalink" data-sheet-permalink href="#" aria-label="Open standalone entry page">Open page</a>
         <button class="sheet__close" type="button" data-sheet-close>
           Close <span aria-hidden="true">&times;</span>
         </button>

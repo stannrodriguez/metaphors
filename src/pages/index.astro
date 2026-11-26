@@ -30,7 +30,7 @@ const allSlugs = metaphors.map((m) => m.slug).join(',')
           <h1 class="intro__title">{SITE_NAME}</h1>
           <p class="intro__body">{INTRO}</p>
           <hr class="rule" />
-          <button class="draw" type="button" data-draw={allSlugs}>Draw a card &rarr;</button>
+          <button class="draw" type="button" data-draw={allSlugs} aria-label="Draw a random card">Draw a card &rarr;</button>
           <p class="intro__about"><a href={about()}>About the collection</a></p>
         </section>
 

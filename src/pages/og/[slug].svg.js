@@ -83,7 +83,7 @@ export function GET({ params }) {
   const svg =
     slug === 'home'
       ? card({
-          label: 'A collection of twenty',
+          label: 'The collection',
           name: SITE_NAME,
           line: SITE_TAGLINE,
           glyphKey: 'north-star',
